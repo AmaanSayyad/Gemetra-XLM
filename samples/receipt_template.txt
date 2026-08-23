@@ -1,0 +1,106 @@
+╔══════════════════════════════════════════════════════════════════════════╗
+║                                                                          ║
+║                    THE DUBAI MALL - ROLEX BOUTIQUE                       ║
+║                                                                          ║
+║         Unit 206, The Dubai Mall, Financial Centre Road                  ║
+║                    Dubai, United Arab Emirates                            ║
+║                                                                          ║
+║         VAT Registration Number: GB987654321                             ║
+║         Business License: TRN-123456                                      ║
+║         Phone: +971 4 123 4567                                           ║
+║         Email: info@rolexdubai.ae                                        ║
+║         Website: www.rolexdubai.ae                                       ║
+║                                                                          ║
+╠══════════════════════════════════════════════════════════════════════════╣
+║                                                                          ║
+║  INVOICE / RECEIPT                                                       ║
+║                                                                          ║
+║  Receipt Number:    DXB-2024-084729                                      ║
+║  Invoice Number:    INV-2024-084729                                      ║
+║  Date:             15 December 2024                                     ║
+║  Time:             15:30:15                                              ║
+║                                                                          ║
+╠══════════════════════════════════════════════════════════════════════════╣
+║                                                                          ║
+║  CUSTOMER INFORMATION                                                    ║
+║                                                                          ║
+║  Name:             John Smith                                            ║
+║  Passport Number:  G12345678                                             ║
+║  Nationality:      United Kingdom                                         ║
+║  Flight Number:    EK205                                                 ║
+║  Departure Date:   20 December 2024                                      ║
+║                                                                          ║
+╠══════════════════════════════════════════════════════════════════════════╣
+║                                                                          ║
+║  ITEMS PURCHASED                                                         ║
+║                                                                          ║
+║  ┌────────────────────────────────────────────────────────────────────┐ ║
+║  │ Item Code    Description                    Qty  Price    VAT  Total│ ║
+║  ├────────────────────────────────────────────────────────────────────┤ ║
+║  │ ROLEX-       Rolex Submariner Date -        1   11,875.00 625.00   │ ║
+║  │ 126610LN     41mm, Black Dial,               │              │  12,500.00│ ║
+║  │             Oystersteel & Yellow Gold        │              │        │ ║
+║  │             (Reference: 126610LN)            │              │        │ ║
+║  └────────────────────────────────────────────────────────────────────┘ ║
+║                                                                          ║
+╠══════════════════════════════════════════════════════════════════════════╣
+║                                                                          ║
+║  PAYMENT SUMMARY                                                         ║
+║                                                                          ║
+║  ┌──────────────────────────────────────────────────────────────────┐   ║
+║  │ Subtotal (Excluding VAT):                    AED   11,875.00    │   ║
+║  │ VAT (5%):                                    AED      625.00    │   ║
+║  │ ────────────────────────────────────────────────────────────────│   ║
+║  │ TOTAL AMOUNT:                                AED   12,500.00    │   ║
+║  └──────────────────────────────────────────────────────────────────┘   ║
+║                                                                          ║
+║  Payment Method:  Credit Card (****4532)                                ║
+║  Transaction ID:  TXN-DXB-2024-084729                                    ║
+║                                                                          ║
+╠══════════════════════════════════════════════════════════════════════════╣
+║                                                                          ║
+║  VAT REFUND INFORMATION                                                  ║
+║                                                                          ║
+║  ✓ This purchase is eligible for VAT refund                              ║
+║  ✓ Minimum purchase requirement met (AED 250)                           ║
+║  ✓ Tourist VAT Refund Scheme applicable                                 ║
+║                                                                          ║
+║  Refund Amount:        AED 625.00                                        ║
+║  Processing Fee:       AED 0.00                                          ║
+║  Net Refund:           AED 625.00                                        ║
+║                                                                          ║
+║  To claim your refund:                                                   ║
+║  1. Present this receipt at airport customs                              ║
+║  2. Show your passport and boarding pass                                ║
+║  3. Items must be unused and in original packaging                       ║
+║  4. Refund will be processed within 3-5 business days                   ║
+║                                                                          ║
+╠══════════════════════════════════════════════════════════════════════════╣
+║                                                                          ║
+║  IMPORTANT NOTES                                                         ║
+║                                                                          ║
+║  • This receipt is valid for VAT refund purposes                         ║
+║  • Keep this receipt safe - required for refund claim                   ║
+║  • Items must be exported within 90 days of purchase                    ║
+║  • Refund can be claimed at airport or via online portal                ║
+║  • For assistance, contact: refunds@rolexdubai.ae                        ║
+║                                                                          ║
+║  Thank you for your purchase!                                           ║
+║                                                                          ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+═══════════════════════════════════════════════════════════════════════════════
+
+RECEIPT VALIDATION QR CODE
+[QR Code would appear here in actual document]
+
+Scan this QR code to:
+- Verify receipt authenticity
+- Track refund status
+- Access digital receipt copy
+
+═══════════════════════════════════════════════════════════════════════════════
+
+Document ID: DOC-DXB-2024-084729
+Generated: 2024-12-15 15:30:15 GMT+4
+Valid Until: 2025-03-15

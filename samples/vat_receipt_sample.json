@@ -1,0 +1,120 @@
+{
+  "documentType": "vat_receipt",
+  "documentFormat": "pdf",
+  "version": "1.0",
+  "merchant": {
+    "name": "The Dubai Mall - Rolex Boutique",
+    "vatRegistrationNumber": "GB987654321",
+    "businessNumber": "TRN-123456",
+    "address": {
+      "street": "Unit 206, The Dubai Mall",
+      "city": "Dubai",
+      "state": null,
+      "country": "UAE",
+      "postalCode": null
+    },
+    "contact": {
+      "phone": "+971 4 123 4567",
+      "email": "info@rolexdubai.ae",
+      "website": "www.rolexdubai.ae"
+    }
+  },
+  "transaction": {
+    "receiptNumber": "DXB-2024-084729",
+    "invoiceNumber": "INV-2024-084729",
+    "date": "2024-12-15",
+    "time": "15:30:00",
+    "timezone": "Asia/Dubai",
+    "currency": "AED",
+    "exchangeRate": null,
+    "paymentMethod": "Credit Card",
+    "paymentReference": "****4532"
+  },
+  "items": [
+    {
+      "id": "ITEM-001",
+      "description": "Rolex Submariner Date - 41mm",
+      "sku": "ROLEX-126610LN",
+      "quantity": 1,
+      "unitPrice": 11875.00,
+      "vatRate": 5,
+      "vatAmount": 625.00,
+      "totalPrice": 12500.00,
+      "category": "luxury_watch",
+      "hsCode": "9102.11.00"
+    }
+  ],
+  "totals": {
+    "subtotal": 11875.00,
+    "discount": 0.00,
+    "vatAmount": 625.00,
+    "serviceCharge": 0.00,
+    "total": 12500.00,
+    "currency": "AED"
+  },
+  "customer": {
+    "name": "John Smith",
+    "passportNumber": "G12345678",
+    "nationality": "United Kingdom",
+    "dateOfBirth": "1987-05-23",
+    "flightNumber": "EK205",
+    "departureDate": "2024-12-20",
+    "walletAddress": "GBRPYHIL2CI3FNQ4BXLFMNDLFJUNPU2HY3ZMFSHONUCEOASW7QC7OX2H",
+    "email": "john.smith@example.com",
+    "phone": "+44 20 1234 5678"
+  },
+  "vatRefund": {
+    "eligible": true,
+    "eligibilityReason": "Tourist purchase over 250 AED",
+    "refundAmount": 625.00,
+    "refundCurrency": "AED",
+    "convertedAmount": 170.00,
+    "convertedCurrency": "XLM",
+    "exchangeRate": 3.6765,
+    "exchangeRateDate": "2024-12-16",
+    "processingFee": 0.00,
+    "netRefundAmount": 170.00
+  },
+  "compliance": {
+    "taxJurisdiction": "UAE",
+    "taxAuthority": "Federal Tax Authority (FTA)",
+    "refundScheme": "Tourist VAT Refund Scheme",
+    "minimumPurchase": 250.00,
+    "minimumPurchaseCurrency": "AED",
+    "meetsMinimum": true
+  },
+  "metadata": {
+    "uploadDate": "2024-12-16T10:30:00Z",
+    "uploadMethod": "web_upload",
+    "fileSize": 245678,
+    "fileFormat": "pdf",
+    "fileHash": "sha256:abc123def456...",
+    "ocrConfidence": 0.95,
+    "extractionMethod": "automated_ocr",
+    "validationStatus": "validated",
+    "validationDate": "2024-12-16T10:32:15Z",
+    "processedBy": "gemetra_vat_system_v1.0"
+  },
+  "status": {
+    "current": "pending",
+    "history": [
+      {
+        "status": "submitted",
+        "timestamp": "2024-12-16T10:30:00Z",
+        "message": "Document uploaded and validated"
+      },
+      {
+        "status": "pending",
+        "timestamp": "2024-12-16T10:32:15Z",
+        "message": "Awaiting blockchain confirmation"
+      }
+    ]
+  },
+  "blockchain": {
+    "network": "stellar",
+    "token": "XLM",
+    "transactionHash": null,
+    "ledger": null,
+    "confirmationStatus": "pending"
+  }
+}
