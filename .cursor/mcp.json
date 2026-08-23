@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "stellar-raven": {
+      "url": "https://raven.stellar.buzz/mcp"
+    },
+    "supabase": {
+      "url": "https://mcp.supabase.com/mcp?project_ref=gtcmjxfqjtnshexujgmq"
+    }
+  }
+}
