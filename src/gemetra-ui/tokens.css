@@ -1,0 +1,369 @@
+:root {
+  --gem-brand: #5057fd;
+  --gem-brand-hover: #3d44e8;
+  --gem-brand-soft: #eef0ff;
+  --gem-lime: #c8ff4a;
+  --gem-lime-dark: #9fd600;
+  --gem-ink: #0a0a0f;
+  --gem-ink-soft: #14141c;
+  --gem-surface: #ffffff;
+  --gem-surface-muted: #f5f5f7;
+  --gem-border: #e5e5ea;
+  --gem-text: #0d0d12;
+  --gem-text-muted: #6e6e78;
+  --gem-success: #16a34a;
+  --gem-radius-sm: 16px;
+  --gem-radius-md: 24px;
+  --gem-radius-lg: 32px;
+  --gem-radius-pill: 9999px;
+  --font-serif: "Cormorant Garamond", "DM Serif Display", Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --atlys-gold: #d4a853;
+  --atlys-gold-muted: rgba(212, 168, 83, 0.35);
+}
+
+.gem-serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+/* Country names on cards — uppercase display serif like Atlys Denton */
+.gem-display {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+}
+
+.gem-sans {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.gem-dot-grid {
+  background-color: var(--gem-surface);
+  background-image: radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.04) 1px, transparent 0);
+  background-size: 20px 20px;
+}
+
+.gem-dark-grid {
+  background-color: var(--gem-ink);
+  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.06) 1px, transparent 0);
+  background-size: 20px 20px;
+}
+
+/* Atlys Passport Index — pure black + center glow */
+.atlys-index-page {
+  background-color: #000;
+  color: #fff;
+}
+
+.atlys-index-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
+  z-index: 0;
+}
+
+.atlys-index-page > * {
+  position: relative;
+  z-index: 1;
+}
+
+.atlys-index-serif {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+
+.atlys-index-heading {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+}
+
+.atlys-index-grid-section {
+  background-color: #000;
+  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.07) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+.atlys-top-card {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(18, 18, 18, 0.9);
+  padding: 0.875rem 1rem;
+  text-align: left;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.atlys-top-card:hover {
+  background: rgba(28, 28, 28, 0.95);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.atlys-stat-card {
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 1.25rem 1.5rem;
+}
+
+.atlys-grid-card {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.025);
+  padding: 1rem 1.125rem;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.atlys-grid-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.atlys-grid-card-elite {
+  border-color: rgba(212, 168, 83, 0.35);
+  background: rgba(212, 168, 83, 0.04);
+}
+
+.atlys-grid-card-elite:hover {
+  border-color: rgba(212, 168, 83, 0.5);
+  background: rgba(212, 168, 83, 0.07);
+}
+
+.atlys-faq-item {
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+}
+
+.atlys-cta-card {
+  border-radius: 24px;
+  background: linear-gradient(135deg, #0a0a12 0%, #12182a 45%, #1a1030 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.atlys-sort-group {
+  display: inline-flex;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 3px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.atlys-passport-stage {
+  perspective: 1200px;
+  perspective-origin: 50% 40%;
+}
+
+.atlys-passport-fan-item {
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease, filter 0.45s ease;
+}
+
+/* Atlys coverflow carousel — styles inlined in PassportCarousel.tsx to match atlys.com DOM */
+
+.atlys-index-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid var(--atlys-gold-muted);
+  background: rgba(212, 168, 83, 0.06);
+  padding: 0.5rem 1rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--atlys-gold);
+}
+
+.atlys-rank-gold {
+  color: var(--atlys-gold);
+}
+
+.atlys-detail-passport-frame {
+  filter: drop-shadow(0 28px 40px rgba(0, 0, 0, 0.55));
+}
+
+.atlys-detail-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.atlys-detail-stat {
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 1rem 1.125rem;
+}
+
+.atlys-detail-panel {
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 1.25rem 1.375rem;
+}
+
+.atlys-detail-mini-card {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(18, 18, 18, 0.9);
+  padding: 0.875rem 1rem;
+  text-align: left;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.atlys-detail-mini-card:hover {
+  background: rgba(28, 28, 28, 0.95);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.gem-card {
+  @apply bg-white border border-[var(--gem-border)] rounded-[var(--gem-radius-md)] shadow-[0_2px_16px_-4px_rgba(0,0,0,0.08)];
+}
+
+.gem-card-elevated {
+  @apply bg-white rounded-[var(--gem-radius-lg)] shadow-[0_24px_80px_-32px_rgba(0,0,0,0.18)] border border-[var(--gem-border)];
+}
+
+.gem-pill {
+  @apply inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium;
+}
+
+.gem-search-pill {
+  @apply flex items-center gap-2 rounded-full border border-[var(--gem-border)] bg-[var(--gem-surface-muted)] px-5 py-2.5 text-sm text-[var(--gem-text-muted)] transition;
+}
+.gem-search-pill:focus-within {
+  border-color: var(--gem-brand);
+  box-shadow: 0 0 0 3px rgba(80, 87, 253, 0.15);
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* VAT refund wizard — Atlys form restyle via shell overrides */
+.gem-vat-shell .container {
+  max-width: none;
+  padding: 0;
+}
+
+.gem-vat-shell .bg-white.rounded-lg,
+.gem-vat-shell .bg-white.rounded-xl {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.gem-vat-shell .text-gray-900 { color: var(--gem-text) !important; }
+.gem-vat-shell .text-gray-700,
+.gem-vat-shell .text-gray-600,
+.gem-vat-shell .text-gray-500 { color: var(--gem-text-muted) !important; }
+
+.gem-vat-shell .border-gray-200,
+.gem-vat-shell .border-gray-300 { border-color: var(--gem-border) !important; }
+
+.gem-vat-shell .bg-gray-50 { background: var(--gem-surface-muted) !important; }
+.gem-vat-shell .bg-gray-100 { background: var(--gem-surface-muted) !important; }
+
+.gem-vat-shell input,
+.gem-vat-shell select,
+.gem-vat-shell textarea {
+  border-radius: 12px !important;
+  border-color: var(--gem-border) !important;
+}
+
+.gem-vat-shell input:focus,
+.gem-vat-shell select:focus,
+.gem-vat-shell textarea:focus {
+  outline: none !important;
+  border-color: var(--gem-brand) !important;
+  box-shadow: 0 0 0 3px rgba(80, 87, 253, 0.12) !important;
+}
+
+.gem-vat-shell button.bg-gray-900,
+.gem-vat-shell button.bg-blue-600,
+.gem-vat-shell button.bg-blue-500,
+.gem-vat-shell label.bg-blue-500 {
+  border-radius: 9999px !important;
+  background: var(--gem-ink) !important;
+}
+
+.gem-vat-shell button.bg-gray-900:hover,
+.gem-vat-shell button.bg-blue-600:hover,
+.gem-vat-shell button.hover\:bg-gray-800:hover,
+.gem-vat-shell button.hover\:bg-blue-600:hover,
+.gem-vat-shell label.hover\:bg-blue-600:hover {
+  background: #1a1a22 !important;
+}
+
+.gem-vat-shell .border-dashed {
+  border-radius: 24px !important;
+}
+
+.gem-vat-shell .flex.border.border-gray-300.rounded-lg {
+  border-radius: 9999px !important;
+  border-color: var(--gem-border) !important;
+  overflow: hidden;
+}
+
+.gem-vat-shell .flex.border.border-gray-300.rounded-lg button.bg-gray-900 {
+  background: var(--gem-ink) !important;
+}
+
+.gem-vat-shell h2.text-xl.font-bold {
+  font-size: 1.125rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.02em;
+}
+
+.gem-vat-shell .focus\:ring-blue-500:focus {
+  --tw-ring-color: rgba(80, 87, 253, 0.35) !important;
+}
+
+.gem-vat-shell .focus\:border-blue-500:focus {
+  border-color: var(--gem-brand) !important;
+}
+
+.gem-vat-shell table thead {
+  background: var(--gem-surface-muted) !important;
+}
+
+.gem-vat-shell .from-gray-50,
+.gem-vat-shell .to-gray-100 {
+  --tw-gradient-from: var(--gem-surface-muted) !important;
+  --tw-gradient-to: var(--gem-surface-muted) !important;
+}
