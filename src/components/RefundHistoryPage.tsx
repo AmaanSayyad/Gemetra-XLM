@@ -127,6 +127,13 @@ export const RefundHistoryPage: React.FC<RefundHistoryPageProps> = ({
         const merged = mergeTravelerPayments(local, remote);
         if (cancelled) return;
         setClaims(merged);
+        if (wallet) {
+          try {
+            localStorage.setItem(`gemetra_payments_${wallet}`, JSON.stringify(merged));
+          } catch {
+            /* ignore quota / private mode */
+          }
+        }
 
         const passports = merged
           .map((c) => c.vat_refund_details?.passportNo)

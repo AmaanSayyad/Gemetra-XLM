@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Upload, FileCheck, CheckCircle, AlertCircle, Clock, FileText, FileUp, FormInput, ExternalLink, Sparkles, ChevronDown } from 'lucide-react';
 import { isValidStellarAddress, getStellarExpertTxUrl } from '../utils/stellar';
 import { useStellarWallet } from '../utils/stellar-wallet';
@@ -198,6 +198,7 @@ export const VATRefundPage: React.FC<VATRefundPageProps> = ({
   };
 
   const [pendingRefundId, setPendingRefundId] = useState<string | null>(null);
+  const approveLock = useRef(false);
 
   const buildRefundMemo = () => {
     const memoText = `VAT Refund - ${formData.receiptNo || formData.vatRegNo || 'N/A'}`;
@@ -227,6 +228,8 @@ export const VATRefundPage: React.FC<VATRefundPageProps> = ({
   };
 
   const handleApprove = async () => {
+    if (approveLock.current) return;
+    approveLock.current = true;
     setIsLoading(true);
     setErrorMessage(null);
 
@@ -358,10 +361,11 @@ export const VATRefundPage: React.FC<VATRefundPageProps> = ({
 
       console.log('Treasury payout confirmed:', tx);
 
-      // Update pending refund record to completed, or create new one if pending wasn't created
+      // Update the pending row created above. Use `refundId` (local), not
+      // `pendingRefundId` React state — setState is async and was still null here,
+      // which inserted a second "completed" payment for every successful payout.
       try {
-        if (pendingRefundId) {
-          // Update the existing pending record in Supabase
+        if (refundId) {
           const { error: updateError } = await supabase
             .from('payments')
             .update({
@@ -369,17 +373,16 @@ export const VATRefundPage: React.FC<VATRefundPageProps> = ({
               status: 'completed',
               payment_date: new Date().toISOString()
             })
-            .eq('id', pendingRefundId);
+            .eq('id', refundId);
 
           if (updateError) {
             console.error('Error updating payment in Supabase:', updateError);
           } else {
-            console.log('✅ Updated pending VAT refund to completed in Supabase:', pendingRefundId);
+            console.log('✅ Updated pending VAT refund to completed in Supabase:', refundId);
           }
 
-          // Also update via usePayments hook for localStorage
           try {
-            await updatePaymentStatus(pendingRefundId, 'completed', tx);
+            await updatePaymentStatus(refundId, 'completed', tx);
           } catch (hookError) {
             console.error('Error updating via hook (non-critical):', hookError);
           }
@@ -444,6 +447,7 @@ export const VATRefundPage: React.FC<VATRefundPageProps> = ({
       setTransactionStatus("rejected");
       setStep("sign");
     } finally {
+      approveLock.current = false;
       setIsLoading(false);
     }
   };

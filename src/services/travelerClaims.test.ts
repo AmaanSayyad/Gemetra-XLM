@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Payment } from '../lib/supabase';
-import { mergeTravelerPayments } from './travelerClaims';
+import { collapseDuplicateClaims, mergeTravelerPayments } from './travelerClaims';
 
 const WALLET = 'GDHAGXZUWGJR6AQW25IU74J5JSU5HAKUMUY3SY4JNMJXNXEJCZM7WOAW';
 
@@ -33,5 +33,17 @@ describe('mergeTravelerPayments', () => {
     expect(updated?.status).toBe('completed');
     expect(updated?.transaction_hash).toBe('tx-1');
     expect(updated?.vat_refund_details?.receiptNo).toBe('R-9');
+  });
+
+  it('drops a pending twin when a completed claim shares receipt and amount', () => {
+    const pendingTwin: Payment = {
+      ...remote,
+      id: 'pending-twin',
+      status: 'pending',
+      transaction_hash: undefined,
+      created_at: '2026-08-01T00:00:08Z',
+    };
+    const collapsed = collapseDuplicateClaims([remote, pendingTwin]);
+    expect(collapsed.map((p) => p.id)).toEqual(['same']);
   });
 });

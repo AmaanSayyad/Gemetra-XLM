@@ -8,6 +8,7 @@ import { getStellarExpertTxUrl } from '../utils/stellar';
 import { ADMIN_PUBLIC_KEY, TREASURY_PUBLIC_KEY, formatStellarAddress, isAdminAddress } from '../config/treasury';
 import { requestTreasuryPayout } from '../services/treasuryPayout';
 import { filterLegitimateXlmVatRefunds } from '../utils/vatRefundPayments';
+import { collapseDuplicateClaims } from '../services/travelerClaims';
 import {
   addToClaimBlacklist,
   fetchClaimBlacklist,
@@ -166,7 +167,9 @@ export const VATAdminPage: React.FC = () => {
           return;
         }
 
-        const legitimate = filterLegitimateXlmVatRefunds(data || []);
+        const legitimate = collapseDuplicateClaims(
+          filterLegitimateXlmVatRefunds(data || []) as Payment[]
+        );
 
         console.log(`✅ Found ${legitimate.length} XLM VAT refund records (${(data?.length || 0) - legitimate.length} legacy rows ignored)`);
         if (legitimate.length > 0) {

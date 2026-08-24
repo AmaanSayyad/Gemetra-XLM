@@ -10,6 +10,7 @@ All project-owned markdown lives here. Upstream Stellar agent skills (`.agents/s
 | [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) | Common dev/build/Supabase issues |
 | [SUPABASE_AUDIT_FIXES.md](./SUPABASE_AUDIT_FIXES.md) | Schema history & verification SQL |
 | [POINTS_SYSTEM.md](./POINTS_SYSTEM.md) | Gemetra Points earn/convert flow |
+| [TRUST_SCORE.md](./TRUST_SCORE.md) | Passport score + traveler trust score formulas |
 | [CONVERSION_FLOW.md](./CONVERSION_FLOW.md) | Points → XLM conversion sequence |
 | [VAT_REFUND_DOCUMENT_FORMAT_GUIDE.md](./VAT_REFUND_DOCUMENT_FORMAT_GUIDE.md) | Receipt upload requirements |
 | [VAT_REFUND_SAMPLE_DATA.md](./VAT_REFUND_SAMPLE_DATA.md) | Test form data (Stellar addresses) |

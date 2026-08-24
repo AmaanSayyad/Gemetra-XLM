@@ -350,7 +350,7 @@ supabase db push --project-ref gtcmjxfqjtnshexujgmq
 ## Features
 
 - **53-country VAT math** — per-country rates and rules (`vatClaimMath.ts`)
-- **Passport MRZ scan** — Tesseract + optional verification edge fn
+- **Passport MRZ scan** — Tesseract + optional verification edge fn; [passport & traveler trust scores](./docs/TRUST_SCORE.md)
 - **Treasury payouts** — server-signed XLM (edge fn or local dev plugin)
 - **Admin dashboard** — filter, export CSV, pay / cancel / blacklist
 - **Claim blacklist** — wallet + passport blocking

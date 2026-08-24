@@ -39,9 +39,51 @@ export function mergeTravelerPayments(local: Payment[], remote: Payment[]): Paym
     });
   }
 
-  return filterLegitimateXlmVatRefunds([...byId.values()]).sort((a, b) => {
-    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-  });
+  return collapseDuplicateClaims(
+    filterLegitimateXlmVatRefunds([...byId.values()]).sort((a, b) => {
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    })
+  );
+}
+
+function claimFingerprint(payment: Payment): string {
+  const receipt = (payment.vat_refund_details?.receiptNo ?? '').trim().toUpperCase();
+  const amount = Number(payment.amount).toFixed(4);
+  return `${payment.user_id}|${amount}|${receipt}`;
+}
+
+/**
+ * Drop pending leftovers created by the stale-state double insert
+ * (pending row + a second completed row a few seconds later).
+ */
+export function collapseDuplicateClaims(payments: Payment[]): Payment[] {
+  const groups = new Map<string, Payment[]>();
+  for (const payment of payments) {
+    const key = claimFingerprint(payment);
+    const list = groups.get(key) ?? [];
+    list.push(payment);
+    groups.set(key, list);
+  }
+
+  const drop = new Set<string>();
+  for (const group of groups.values()) {
+    if (group.length < 2) continue;
+    const completed = group.filter((p) => p.status === 'completed');
+    if (completed.length > 0) {
+      for (const payment of group) {
+        if (payment.status === 'pending' || payment.status === 'failed' || payment.status === 'cancelled') {
+          drop.add(payment.id);
+        }
+      }
+    } else {
+      const pending = group
+        .filter((p) => p.status === 'pending')
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      for (const extra of pending.slice(1)) drop.add(extra.id);
+    }
+  }
+
+  return payments.filter((payment) => !drop.has(payment.id));
 }
 
 export async function fetchTravelerVatClaims(wallet: string): Promise<Payment[]> {
