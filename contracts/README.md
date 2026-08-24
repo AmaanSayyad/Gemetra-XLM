@@ -2,6 +2,8 @@
 
 On-chain smart contracts for Gemetra. **Live on mainnet and testnet.** The dApp still settles tourist payouts with classic Stellar XLM; the `vat-refund` contract is the auditable claim ledger (best-effort from the UI).
 
+**Demo:** [https://youtu.be/ewvlCAq8bVM](https://youtu.be/ewvlCAq8bVM) · **X:** [https://x.com/gemetraclaims](https://x.com/gemetraclaims)
+
 ## Architecture
 
 ```mermaid

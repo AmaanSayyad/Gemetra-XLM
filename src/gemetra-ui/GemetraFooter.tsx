@@ -44,6 +44,11 @@ const productLinks: FooterLink[] = [
 
 const resourceLinks: FooterLink[] = [
   {
+    label: 'Demo Video',
+    href: GEMETRA_LINKS.demo,
+    external: true,
+  },
+  {
     label: 'Documentation',
     href: GEMETRA_LINKS.readme,
     external: true,

@@ -19,12 +19,17 @@ description: >-
 - **Backend:** Supabase PostgreSQL (`gtcmjxfqjtnshexujgmq`)
 - **Payouts:** Treasury wallet via `treasury-payout` edge function (or dev plugin)
 - **AI:** Google Gemini; EmailJS optional
+- **Demo:** [https://youtu.be/ewvlCAq8bVM](https://youtu.be/ewvlCAq8bVM)
+- **X:** [https://x.com/gemetraclaims](https://x.com/gemetraclaims)
+- **Live:** [https://gemetra-xlm.vercel.app/](https://gemetra-xlm.vercel.app/)
+- **Canonical URLs:** `src/config/links.ts`
 
 ## Key source files
 
 | Area | Path |
 |------|------|
 | App shell / nav | `src/app/AppShell.tsx` |
+| Official links | `src/config/links.ts` |
 | Treasury config | `src/config/treasury.ts` |
 | Treasury payouts | `src/services/treasuryPayout.ts` |
 | Claim blacklist | `src/services/claimBlacklist.ts` |

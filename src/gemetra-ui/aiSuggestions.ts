@@ -15,6 +15,8 @@ export const AI_SUGGESTION_GROUPS: AISuggestionGroup[] = [
       'What receipts do I need for a VAT claim?',
       'How are refunds paid in XLM?',
       'Which countries support tourist VAT refunds?',
+      'Where can I watch the Gemetra demo?',
+      'What is Gemetra\'s X account?',
     ],
   },
   {

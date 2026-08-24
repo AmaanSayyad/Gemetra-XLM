@@ -11,6 +11,7 @@ import * as SubframeUtils from "../utils";
 import { LinkButton } from "./LinkButton";
 import { IconButton } from "./IconButton";
 import { Twitter, Github, Linkedin, Wallet } from "lucide-react";
+import { GEMETRA_LINKS } from "../../config/links";
 
 interface BoldFooterRootProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
@@ -67,8 +68,12 @@ const BoldFooterRoot = React.forwardRef<HTMLElement, BoldFooterRootProps>(
                 Follow us
               </span>
               <div className="flex w-full items-center gap-2">
-                <IconButton icon={<Twitter />} />
-                <IconButton icon={<Github />} />
+                <a href={GEMETRA_LINKS.x} target="_blank" rel="noopener noreferrer" aria-label="Gemetra on X">
+                  <IconButton icon={<Twitter />} />
+                </a>
+                <a href={GEMETRA_LINKS.github} target="_blank" rel="noopener noreferrer" aria-label="Gemetra on GitHub">
+                  <IconButton icon={<Github />} />
+                </a>
                 <IconButton icon={<Linkedin />} />
               </div>
             </div>

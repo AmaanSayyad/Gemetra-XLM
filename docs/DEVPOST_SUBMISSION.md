@@ -74,6 +74,9 @@ sequenceDiagram
 
 ## Links
 
-- Repo: Gemetra-XLM
+- Demo video: [https://youtu.be/ewvlCAq8bVM](https://youtu.be/ewvlCAq8bVM)
+- X: [@GemetraClaims](https://x.com/gemetraclaims)
+- Live website: [https://gemetra-xlm.vercel.app/](https://gemetra-xlm.vercel.app/)
+- Repo: [AmaanSayyad/Gemetra-XLM](https://github.com/AmaanSayyad/Gemetra-XLM)
 - Docs: [docs/README.md](./README.md)
 - Stellar Expert for tx verification

@@ -19,6 +19,14 @@ All project-owned markdown lives here. Upstream Stellar agent skills (`.agents/s
 | [../contracts/README.md](../contracts/README.md) | Soroban `vat-refund` contract |
 | [../README.md](../README.md) | Main project README |
 
+## Official links
+
+- **Demo video:** [https://youtu.be/ewvlCAq8bVM](https://youtu.be/ewvlCAq8bVM)
+- **X:** [@GemetraClaims](https://x.com/gemetraclaims)
+- **Live website:** [gemetra-xlm.vercel.app](https://gemetra-xlm.vercel.app/)
+- **GitHub:** [AmaanSayyad/Gemetra-XLM](https://github.com/AmaanSayyad/Gemetra-XLM)
+- **Pitch deck:** [Google Slides](https://docs.google.com/presentation/d/1SOSCBTUPK5O3G4oFRJQUXBdJWTl25d3eip3talr7e2s/edit?usp=sharing)
+
 ## Architecture at a glance
 
 ```mermaid

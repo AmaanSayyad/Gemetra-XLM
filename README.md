@@ -31,6 +31,7 @@ Gemetra is a **Stellar/XLM tourist VAT refund dApp**:
 ## Official Links
 
 - **X:** [@GemetraClaims](https://x.com/gemetraclaims)
+- **Demo video:** [YouTube](https://youtu.be/ewvlCAq8bVM)
 - **Pitch deck:** [Google Slides](https://docs.google.com/presentation/d/1SOSCBTUPK5O3G4oFRJQUXBdJWTl25d3eip3talr7e2s/edit?usp=sharing)
 - **GitHub:** [AmaanSayyad/Gemetra-XLM](https://github.com/AmaanSayyad/Gemetra-XLM)
 - **Live website:** [gemetra-xlm.vercel.app](https://gemetra-xlm.vercel.app/)

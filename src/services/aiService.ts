@@ -1,6 +1,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { fetchCryptoPrice, formatPriceResponse } from './priceService';
 import { fixTypos } from './textProcessingService';
+import { GEMETRA_LINKS } from '../config/links';
 
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
@@ -245,6 +246,23 @@ const intelligentThinking = (message: string): { shouldAnswer: boolean, directAn
     };
   }
 
+  // Demo video
+  if (/(demo video|watch.{0,20}demo|gemetra demo|youtu\.?be)/i.test(message)) {
+    return {
+      shouldAnswer: true,
+      directAnswer: 'demo',
+      reasoning: 'User asking for the Gemetra product demo video.',
+    };
+  }
+
+  if (/(x account|twitter|@gemetraclaims|follow (us|gemetra))/i.test(message)) {
+    return {
+      shouldAnswer: true,
+      directAnswer: 'x',
+      reasoning: 'User asking for Gemetra on X.',
+    };
+  }
+
   // Founder questions
   if (analysis.topics.includes('foundation') || analysis.entities.includes('founder')) {
     return {
@@ -334,6 +352,9 @@ const createSystemPrompt = (context: AIContext) => {
 
 🏢 COMPANY CONTEXT:
 - Platform: Gemetra (Stellar-based tourist VAT refund app using XLM)
+- Demo video: ${GEMETRA_LINKS.demo}
+- X: ${GEMETRA_LINKS.x} (@GemetraClaims)
+- Live website: ${GEMETRA_LINKS.website}
 - VAT Refunds: ${vatPayments.length}
 
 🧾 RECENT VAT REFUNDS:
@@ -508,6 +529,20 @@ ${distanceFromATH > -50 ? '💡 Still within reasonable distance of peak levels!
           return response;
         }
         break;
+
+      case 'demo': {
+        const demoResponse = `Watch the **Gemetra demo** here: ${GEMETRA_LINKS.demo}
+
+It walks through tourist VAT claims, Stellar wallet payouts in XLM, and the admin flow. Live app: ${GEMETRA_LINKS.website}`;
+        addToMemory(message, demoResponse, 'demo_intelligent');
+        return demoResponse;
+      }
+
+      case 'x': {
+        const xResponse = `Follow Gemetra on **X**: [@GemetraClaims](${GEMETRA_LINKS.x})`;
+        addToMemory(message, xResponse, 'x_intelligent');
+        return xResponse;
+      }
 
       case 'founder':
         const founderResponse = `👨‍🎓 **Stellar Founders: Jed McCaleb & Joyce Kim**
@@ -736,7 +771,7 @@ const generateCompanyAnalytics = (context: AIContext) => {
     totalRefunded,
     pendingAmount,
     lastRefund,
-    companyDescription: `Gemetra is a Stellar-powered VAT refund platform. Tourists submit purchase receipts and receive refunds settled in XLM with fast, low-cost on-chain payouts.`,
+    companyDescription: `Gemetra is a Stellar-powered VAT refund platform. Tourists submit purchase receipts and receive refunds settled in XLM with fast, low-cost on-chain payouts. Demo: ${GEMETRA_LINKS.demo} X: ${GEMETRA_LINKS.x}`,
   };
 };
 

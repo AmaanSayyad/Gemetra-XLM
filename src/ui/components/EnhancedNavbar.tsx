@@ -5,6 +5,7 @@ import * as SubframeUtils from "../utils";
 import { Button } from "./Button";
 import { Menu, X, ChevronDown, Wallet } from "lucide-react";
 import ConnectButton from "../../utils/connect-wallet";
+import { GEMETRA_LINKS } from "../../config/links";
 
 interface NavItemProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
@@ -149,6 +150,16 @@ const EnhancedNavbar = React.forwardRef<HTMLElement, EnhancedNavbarProps>(
             >
               How It Works
             </NavItem>
+            <NavItem
+              onClick={() => window.open(GEMETRA_LINKS.demo, '_blank')}
+            >
+              Demo
+            </NavItem>
+            <NavItem
+              onClick={() => window.open(GEMETRA_LINKS.x, '_blank')}
+            >
+              X
+            </NavItem>
           
           </div>
 
@@ -258,6 +269,24 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({
                 className="w-full justify-center"
               >
                 How It Works
+              </NavItem>
+              <NavItem
+                onClick={() => {
+                  window.open(GEMETRA_LINKS.demo, '_blank');
+                  setIsOpen(false);
+                }}
+                className="w-full justify-center"
+              >
+                Demo
+              </NavItem>
+              <NavItem
+                onClick={() => {
+                  window.open(GEMETRA_LINKS.x, '_blank');
+                  setIsOpen(false);
+                }}
+                className="w-full justify-center"
+              >
+                X
               </NavItem>
             </div>
             

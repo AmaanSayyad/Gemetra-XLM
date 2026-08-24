@@ -2,6 +2,8 @@
 
 Ideas aligned with **Gemetra** (Stellar/XLM VAT refunds) and the Stellar ecosystem. ✅ = shipped or in progress.
 
+**Demo video:** [https://youtu.be/ewvlCAq8bVM](https://youtu.be/ewvlCAq8bVM) · **X:** [@GemetraClaims](https://x.com/gemetraclaims)
+
 ---
 
 ## Shipped / in repo

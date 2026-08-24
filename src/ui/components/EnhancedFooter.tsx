@@ -142,6 +142,10 @@ const EnhancedFooter = React.forwardRef<HTMLElement, EnhancedFooterProps>(
                   Resources
                 </h4>
                 <div className="flex flex-col gap-2">
+                  <a href={GEMETRA_LINKS.demo} target="_blank" rel="noopener noreferrer" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm flex items-center gap-1">
+                    <span>Demo Video</span>
+                    <ExternalLink size={12} />
+                  </a>
                   <a href={GEMETRA_LINKS.deck} target="_blank" rel="noopener noreferrer" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm flex items-center gap-1">
                     <span>Pitch Deck</span>
                     <ExternalLink size={12} />
@@ -150,14 +154,15 @@ const EnhancedFooter = React.forwardRef<HTMLElement, EnhancedFooterProps>(
                     <span>GitHub</span>
                     <ExternalLink size={12} />
                   </a>
+                  <a href={GEMETRA_LINKS.x} target="_blank" rel="noopener noreferrer" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm flex items-center gap-1">
+                    <span>X (@GemetraClaims)</span>
+                    <ExternalLink size={12} />
+                  </a>
                   <a href="#api" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm">
                     API Reference
                   </a>
                   <a href="#help" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm">
                     Help Center
-                  </a>
-                  <a href="#community" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm">
-                    Community
                   </a>
                 </div>
               </div>

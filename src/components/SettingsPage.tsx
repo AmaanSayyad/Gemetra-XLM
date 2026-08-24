@@ -15,6 +15,7 @@ import {
   Loader2,
   CheckCircle2,
   Settings2,
+  Play,
 } from 'lucide-react';
 import { GEMETRA_LINKS } from '../config/links';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -455,6 +456,16 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ onBack }) => {
 
           <SettingsCard icon={<Globe className="h-5 w-5" />} title="Help & resources" subtitle="Learn more about Gemetra">
             <a
+              href={GEMETRA_LINKS.demo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm text-[var(--gem-text-muted)] transition hover:bg-[var(--gem-surface-muted)] hover:text-[var(--gem-text)]"
+            >
+              <Play className="h-4 w-4 shrink-0" />
+              <span className="flex-1">Demo video</span>
+              <ExternalLink className="h-3.5 w-3.5 shrink-0 opacity-50" />
+            </a>
+            <a
               href={GEMETRA_LINKS.deck}
               target="_blank"
               rel="noopener noreferrer"
@@ -491,7 +502,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ onBack }) => {
               className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm text-[var(--gem-text-muted)] transition hover:bg-[var(--gem-surface-muted)] hover:text-[var(--gem-text)]"
             >
               <Globe className="h-4 w-4 shrink-0" />
-              <span className="flex-1">X account</span>
+              <span className="flex-1">X (@GemetraClaims)</span>
               <ExternalLink className="h-3.5 w-3.5 shrink-0 opacity-50" />
             </a>
           </SettingsCard>
