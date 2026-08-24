@@ -58,6 +58,12 @@ export interface VATRefundDetails {
   merchantName?: string;
   merchantAddress?: string;
   receiverWalletAddress?: string;
+  /**
+   * When Soroban integration is enabled, we store the on-chain `claim_id`
+   * returned by `vat-refund.submit_claim` so the admin can call follow-ups
+   * like `mark_paid`, `cancel_claim`, etc.
+   */
+  contractClaimId?: number;
   passportVerification?: {
     status?: string;
     trustScore?: number;

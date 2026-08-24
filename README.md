@@ -1,5 +1,5 @@
 # Gemetra
-
+   
 **Instant VAT refund infrastructure on Stellar (XLM)** — wallet-native, borderless, built for tourists and tax authorities.
 
 ---
@@ -26,6 +26,13 @@ Gemetra is a **Stellar/XLM tourist VAT refund dApp**:
 | Chain | Stellar mainnet (Horizon) |
 
 📖 **Documentation:** [docs/README.md](./docs/README.md)
+
+## Official Links
+
+- **X:** [@GemetraClaims](https://x.com/gemetraclaims)
+- **Pitch deck:** [Google Slides](https://docs.google.com/presentation/d/1SOSCBTUPK5O3G4oFRJQUXBdJWTl25d3eip3talr7e2s/edit?usp=sharing)
+- **GitHub:** [AmaanSayyad/Gemetra-XLM](https://github.com/AmaanSayyad/Gemetra-XLM)
+- **Live website:** [gemetra-xlm.vercel.app](https://gemetra-xlm.vercel.app/)
 
 ---
 
@@ -56,6 +63,42 @@ flowchart TB
     EF --> T
     T --> H
     WEB --> VP
+```
+
+---
+
+## Treasury Settlement Model
+
+Gemetra operates as a **fronting treasury** for tourist VAT claims:
+
+1. The **tourist submits** a claim in the app.
+2. **Gemetra treasury pays the tourist first** in XLM once the claim is accepted for payout.
+3. Gemetra then **submits the verified claim package to the government / tax authority**.
+4. The **government reimburses Gemetra treasury** on behalf of the tourist after review.
+
+This means the tourist-facing payout rail and the government reimbursement rail are **separate legs** of the same claim lifecycle.
+
+```mermaid
+sequenceDiagram
+    participant Tourist
+    participant App as Gemetra App
+    participant Treasury as Gemetra Treasury
+    participant Gov as Government / Tax Authority
+
+    Tourist->>App: Submit receipt, passport, wallet, country
+    App->>Treasury: Approve claim for payout
+    Treasury-->>Tourist: Pay XLM refund immediately
+    App->>Gov: Submit claimant details + receipt package
+    Gov->>Gov: Verify traveler eligibility and export rules
+    Gov-->>Treasury: Reimburse Gemetra treasury on behalf of tourist
+```
+
+```mermaid
+flowchart LR
+    A[Tourist Claim] --> B[Gemetra validation]
+    B --> C[Gemetra treasury payout in XLM]
+    C --> D[Government verification]
+    D --> E[Government reimbursement back to Gemetra treasury]
 ```
 
 ---
@@ -124,6 +167,7 @@ sequenceDiagram
     participant SB as Supabase
     participant EF as treasury-payout
     participant Treasury
+    participant Gov as Government / Tax Authority
     participant Points
 
     Tourist->>App: Upload receipt + form + country
@@ -137,6 +181,9 @@ sequenceDiagram
     Treasury-->>EF: tx hash
     EF-->>App: ok + txHash
     App->>SB: UPDATE status=completed, transaction_hash
+    App->>Gov: Submit verified claimant details for reimbursement
+    Gov->>Gov: Review refund package
+    Gov-->>Treasury: Settle VAT amount back to Gemetra
     App->>Points: syncVatRefundPoints
     App-->>Tourist: Success screen + points
 ```

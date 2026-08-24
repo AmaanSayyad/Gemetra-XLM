@@ -16,6 +16,7 @@ import {
   CheckCircle2,
   Settings2,
 } from 'lucide-react';
+import { GEMETRA_LINKS } from '../config/links';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStellarWallet } from '../utils/stellar-wallet';
 import { formatStellarAddress } from '../utils/stellar';
@@ -454,13 +455,43 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ onBack }) => {
 
           <SettingsCard icon={<Globe className="h-5 w-5" />} title="Help & resources" subtitle="Learn more about Gemetra">
             <a
-              href="https://docs.google.com/presentation/d/1SOSCBTUPK5O3G4oFRJQUXBdJWTl25d3eip3talr7e2s/edit?usp=sharing"
+              href={GEMETRA_LINKS.deck}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm text-[var(--gem-text-muted)] transition hover:bg-[var(--gem-surface-muted)] hover:text-[var(--gem-text)]"
             >
               <Globe className="h-4 w-4 shrink-0" />
-              <span className="flex-1">Documentation</span>
+              <span className="flex-1">Pitch deck</span>
+              <ExternalLink className="h-3.5 w-3.5 shrink-0 opacity-50" />
+            </a>
+            <a
+              href={GEMETRA_LINKS.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm text-[var(--gem-text-muted)] transition hover:bg-[var(--gem-surface-muted)] hover:text-[var(--gem-text)]"
+            >
+              <Globe className="h-4 w-4 shrink-0" />
+              <span className="flex-1">GitHub repository</span>
+              <ExternalLink className="h-3.5 w-3.5 shrink-0 opacity-50" />
+            </a>
+            <a
+              href={GEMETRA_LINKS.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm text-[var(--gem-text-muted)] transition hover:bg-[var(--gem-surface-muted)] hover:text-[var(--gem-text)]"
+            >
+              <Globe className="h-4 w-4 shrink-0" />
+              <span className="flex-1">Live website</span>
+              <ExternalLink className="h-3.5 w-3.5 shrink-0 opacity-50" />
+            </a>
+            <a
+              href={GEMETRA_LINKS.x}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm text-[var(--gem-text-muted)] transition hover:bg-[var(--gem-surface-muted)] hover:text-[var(--gem-text)]"
+            >
+              <Globe className="h-4 w-4 shrink-0" />
+              <span className="flex-1">X account</span>
               <ExternalLink className="h-3.5 w-3.5 shrink-0 opacity-50" />
             </a>
           </SettingsCard>

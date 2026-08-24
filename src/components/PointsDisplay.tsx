@@ -156,7 +156,7 @@ export const PointsDisplay: React.FC<PointsDisplayProps> = ({
                       }}
                       className="text-xs font-medium text-[var(--gem-brand)] hover:underline"
                     >
-                      View all refunds →
+                      View my claims →
                     </button>
                   )}
                 </div>

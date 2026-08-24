@@ -42,6 +42,7 @@ export const AI_SUGGESTION_GROUPS: AISuggestionGroup[] = [
     label: 'My account',
     questions: [
       'Show me my refund history',
+      'Show me my claims',
       'When was my last VAT refund?',
       'Show me pending VAT refunds',
     ],

@@ -14,6 +14,24 @@ function generateUUID() {
   });
 }
 
+/** Columns that exist on `payments` — extra client fields like blockchain_type will fail the insert. */
+function toSupabasePaymentRow(payment: Payment) {
+  return {
+    id: payment.id,
+    employee_id: payment.employee_id,
+    user_id: payment.user_id,
+    amount: payment.amount,
+    token: payment.token || 'XLM',
+    transaction_hash: payment.transaction_hash ?? null,
+    status: payment.status,
+    payment_date: payment.payment_date,
+    created_at: payment.created_at,
+    vat_refund_details: payment.vat_refund_details ?? null,
+    network: payment.network ?? 'stellar',
+    stellar_memo: payment.memo ?? null,
+  };
+}
+
 export const usePayments = () => {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [payments, setPayments] = useState<Payment[]>([]);
@@ -48,6 +66,22 @@ export const usePayments = () => {
             localStorage.setItem(localStorageKey, JSON.stringify(parsedPayments));
           }
           console.log('Loaded payments from localStorage:', parsedPayments.length);
+
+          if (parsedPayments.length > 0) {
+            void supabase
+              .from('payments')
+              .upsert(parsedPayments.map(toSupabasePaymentRow), {
+                onConflict: 'id',
+                ignoreDuplicates: true,
+              })
+              .then(({ error: syncError }) => {
+                if (syncError) {
+                  console.error('❌ Failed to backfill VAT refunds to Supabase:', syncError);
+                } else {
+                  console.log(`✅ Synced ${parsedPayments.length} local VAT refund(s) to Supabase`);
+                }
+              });
+          }
         } catch (parseError) {
           console.error('Error parsing payments from localStorage:', parseError);
           setPayments([]);
@@ -105,14 +139,7 @@ export const usePayments = () => {
       try {
         const { data, error } = await supabase
           .from('payments')
-          .upsert([{
-            ...paymentData,
-            id: newPayment.id,
-            user_id: walletAddress,
-            token: paymentData.token || 'XLM',
-            blockchain_type: 'stellar',
-            network: network,
-          }], {
+          .upsert([toSupabasePaymentRow(newPayment)], {
             onConflict: 'id',
             ignoreDuplicates: false
           })

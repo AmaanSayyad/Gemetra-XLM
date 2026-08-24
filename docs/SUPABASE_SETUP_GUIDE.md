@@ -121,11 +121,15 @@ sequenceDiagram
     participant App
     participant SB as Supabase
     participant Admin
+    participant Gov as Government / Tax Authority
+    participant Treasury as Gemetra Treasury
 
     User->>App: Submit VAT claim
     App->>SB: INSERT payments (pending, vat_refund_details)
-    App->>App: Treasury payout → completed
+    App->>Treasury: Treasury payout → completed
     App->>SB: UPDATE status + tx hash
+    App->>Gov: Submit claimant details for reimbursement
+    Gov-->>Treasury: Reimburse Gemetra treasury
 
     Admin->>App: Open Admin dashboard
     App->>SB: SELECT payments WHERE employee_id=vat-refund
@@ -136,6 +140,17 @@ sequenceDiagram
 1. Connect wallet → Submit Refund → check **My Refunds**
 2. Connect **admin wallet** → **Admin** tab → claims list
 3. Test cancel/blacklist on a pending claim (requires migration 5)
+
+### Important model note
+
+The `payments` table currently tracks the **tourist payout leg** of the refund:
+
+- `pending` = claim created, not yet paid by Gemetra treasury
+- `completed` = Gemetra treasury paid the tourist
+
+Government reimbursement back to Gemetra treasury is part of the operating model and is **modeled in the optional Soroban `contracts/vat-refund` contract** (states like `GovernmentSubmitted`, `GovernmentApproved`, `TreasuryReimbursed`).
+
+However, it is still **not yet represented as a separate Supabase table/state machine**. The current app UI continues to show the tourist payout leg via `payments.status` (`pending` vs `completed`).
 
 ---
 

@@ -14,6 +14,12 @@ import {
   removeFromClaimBlacklist,
   type ClaimBlacklistEntry,
 } from '../services/claimBlacklist';
+import {
+  markPaidOnSorobanIfEnabled,
+  cancelClaimOnSorobanIfEnabled,
+  blacklistClaimOnSorobanIfEnabled,
+  computePayoutRefBytes32FromTxHash,
+} from '../services/vatRefundOnchain';
 
 interface VATRefundAdmin {
   id: string;
@@ -39,6 +45,7 @@ interface VATRefundAdmin {
     merchantName?: string;
     merchantAddress?: string;
     receiverWalletAddress?: string;
+      contractClaimId?: number;
     passportVerification?: {
       status?: string;
       trustScore?: number;
@@ -100,7 +107,7 @@ function StatusBadge({ status }: { status: VATRefundAdmin['status'] }) {
 }
 
 export const VATAdminPage: React.FC = () => {
-  const { walletState } = useStellarWallet();
+  const { walletState, signTransaction } = useStellarWallet();
   const address = walletState.publicKey;
   const isConnected = walletState.isConnected;
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -151,7 +158,6 @@ export const VATAdminPage: React.FC = () => {
           .from('payments')
           .select('*')
           .eq('employee_id', 'vat-refund')
-          .eq('token', 'XLM')
           .order('created_at', { ascending: false });
 
         if (error) {
@@ -263,6 +269,20 @@ export const VATAdminPage: React.FC = () => {
 
       patchRefundInState(refund.id, { status: 'cancelled', vat_refund_details: details });
       setAdminActionReason('');
+
+      // Best-effort Soroban `cancel_claim`
+      const contractClaimId = refund.vat_refund_details?.contractClaimId;
+      if (contractClaimId && address && signTransaction) {
+        try {
+          await cancelClaimOnSorobanIfEnabled({
+            admin: address,
+            claimId: contractClaimId,
+            signTransaction,
+          });
+        } catch (onchainErr) {
+          console.warn('Soroban cancel_claim failed (non-fatal):', onchainErr);
+        }
+      }
     } catch (err) {
       setPayoutError(err instanceof Error ? err.message : 'Failed to cancel claim');
     } finally {
@@ -337,6 +357,20 @@ export const VATAdminPage: React.FC = () => {
       const entries = await fetchClaimBlacklist();
       setBlacklistEntries(entries);
       setAdminActionReason('');
+
+      // Best-effort Soroban `blacklist_claim`
+      const contractClaimId = refund.vat_refund_details?.contractClaimId;
+      if (contractClaimId && address && signTransaction) {
+        try {
+          await blacklistClaimOnSorobanIfEnabled({
+            admin: address,
+            claimId: contractClaimId,
+            signTransaction,
+          });
+        } catch (onchainErr) {
+          console.warn('Soroban blacklist_claim failed (non-fatal):', onchainErr);
+        }
+      }
     } catch (err) {
       setPayoutError(err instanceof Error ? err.message : 'Failed to blacklist claim');
     } finally {
@@ -493,6 +527,8 @@ export const VATAdminPage: React.FC = () => {
       return;
     }
 
+    const contractClaimId = refund.vat_refund_details?.contractClaimId;
+
     setPayingRefundId(refund.id);
     setPayoutError(null);
 
@@ -525,6 +561,23 @@ export const VATAdminPage: React.FC = () => {
           ? { ...prev, status: 'completed', transaction_hash: result.txHash }
           : prev
       );
+
+      // Best-effort Soroban `mark_paid` (stores payout reference hash)
+      if (contractClaimId && address && signTransaction && result.txHash) {
+        try {
+          const payoutRefBytes32 = await computePayoutRefBytes32FromTxHash(result.txHash);
+          if (payoutRefBytes32) {
+            await markPaidOnSorobanIfEnabled({
+              admin: address,
+              claimId: contractClaimId,
+              payoutRefBytes32,
+              signTransaction,
+            });
+          }
+        } catch (onchainErr) {
+          console.warn('Soroban mark_paid failed (non-fatal):', onchainErr);
+        }
+      }
     } catch (err) {
       setPayoutError(err instanceof Error ? err.message : 'Treasury payout failed');
     } finally {

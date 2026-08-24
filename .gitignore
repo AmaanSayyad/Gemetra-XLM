@@ -17,3 +17,4 @@ dist/
 
 # Supabase local
 supabase/.temp/
+.vercel

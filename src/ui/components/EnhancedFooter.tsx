@@ -17,6 +17,7 @@ import {
   Bot,
   ExternalLink,
 } from "lucide-react";
+import { GEMETRA_LINKS } from "../../config/links";
 
 interface EnhancedFooterProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
@@ -66,7 +67,7 @@ const EnhancedFooter = React.forwardRef<HTMLElement, EnhancedFooterProps>(
                 {/* Social Links */}
                 <div className="flex items-center gap-2 mb-4">
                   <a
-                    href="https://twitter.com/gemetra"
+                    href={GEMETRA_LINKS.x}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-9 h-9 rounded-lg bg-neutral-100 hover:bg-purple-100 transition-all duration-300 flex items-center justify-center group"
@@ -74,7 +75,7 @@ const EnhancedFooter = React.forwardRef<HTMLElement, EnhancedFooterProps>(
                     <Twitter size={16} className="text-neutral-600 group-hover:text-purple-600 transition-colors" />
                   </a>
                   <a
-                    href="https://github.com/AmaanSayyad/Gemetra-XLM"
+                    href={GEMETRA_LINKS.github}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-9 h-9 rounded-lg bg-neutral-100 hover:bg-purple-100 transition-all duration-300 flex items-center justify-center group"
@@ -141,8 +142,12 @@ const EnhancedFooter = React.forwardRef<HTMLElement, EnhancedFooterProps>(
                   Resources
                 </h4>
                 <div className="flex flex-col gap-2">
-                  <a href="https://docs.google.com/presentation/d/1SOSCBTUPK5O3G4oFRJQUXBdJWTl25d3eip3talr7e2s/edit?usp=sharing" target="_blank" rel="noopener noreferrer" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm flex items-center gap-1">
-                    <span>Documentation</span>
+                  <a href={GEMETRA_LINKS.deck} target="_blank" rel="noopener noreferrer" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm flex items-center gap-1">
+                    <span>Pitch Deck</span>
+                    <ExternalLink size={12} />
+                  </a>
+                  <a href={GEMETRA_LINKS.github} target="_blank" rel="noopener noreferrer" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm flex items-center gap-1">
+                    <span>GitHub</span>
                     <ExternalLink size={12} />
                   </a>
                   <a href="#api" className="text-neutral-600 hover:text-neutral-900 transition-colors text-sm">
@@ -170,7 +175,7 @@ const EnhancedFooter = React.forwardRef<HTMLElement, EnhancedFooterProps>(
                     <span className="text-sm">amaansayyad2001@gmail.com</span>
                   </a>
                   <a
-                    href="https://gemetra-xlm.vercel.app/"
+                    href={GEMETRA_LINKS.website}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 text-neutral-600 hover:text-neutral-900 transition-colors"

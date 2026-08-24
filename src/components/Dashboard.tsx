@@ -130,7 +130,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
             <div className="mt-8 flex flex-wrap gap-3">
               <GemetraButton onClick={() => setActiveTab('vat-refund')}>Submit Refund</GemetraButton>
               <GemetraButton variant="ghost" className="!border-white/20 !text-white hover:!bg-white/10" onClick={() => setActiveTab('refund-history')}>
-                My refunds
+                My claims
               </GemetraButton>
             </div>
           </div>

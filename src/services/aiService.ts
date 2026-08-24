@@ -839,7 +839,7 @@ Connect **Freighter** or **Albedo** in Settings to receive payouts. Browse the *
 - **Validation:** Receipt review typically completes within **24–48 hours** depending on document clarity and country rules.
 - **End-to-end:** Most tourists receive their refund within **1–3 business days** of submitting a complete claim.
 
-You can track each claim's status under **My Refunds** or ask me "What is the status of my VAT refunds?"`;
+You can track each claim's status, payout proof, and traveler trust score under **My Claims** or ask me "What is the status of my VAT refunds?"`;
   }
 
   if (/what receipts.*need|documents.*vat claim|receipts.*vat claim/i.test(message)) {
@@ -889,11 +889,11 @@ Check the **Country Index** or **Explore** page for exact minimums, net refund r
   if (/what happens after.*submit|after i submit.*claim/i.test(message)) {
     return `📬 **After You Submit a Claim**
 
-1. **Confirmation** — your claim appears under **My Refunds** with status *pending*.
+1. **Confirmation** — your claim appears under **My Claims** with status *pending*.
 2. **Review** — Gemetra validates your receipt, passport, and country-specific rules.
 3. **Approval** — once approved, the refund amount is calculated and queued for payout.
 4. **XLM payout** — funds are sent to your connected Stellar wallet, typically within seconds of approval.
-5. **Tracking** — check **My Refunds** or ask me about status anytime.
+5. **Tracking** — check **My Claims** or ask me about status anytime.
 
 Incomplete documents may delay review — ensure your receipt clearly shows VAT paid.`;
   }
@@ -942,7 +942,7 @@ This is why Gemetra settles VAT refunds on Stellar — tourists get paid almost 
 - **${analytics.totalRefunds}** total claims${pendingDetail}`;
   }
 
-  if (/show me my refund history|my refund history|refund history/i.test(message)) {
+  if (/show me my refund history|my refund history|refund history|my claims|show me my claims/i.test(message)) {
     return formatRefundHistory(context);
   }
 

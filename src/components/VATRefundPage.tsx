@@ -5,11 +5,12 @@ import { useStellarWallet } from '../utils/stellar-wallet';
 import { usePayments } from '../hooks/usePayments';
 import { usePoints } from '../hooks/usePoints';
 import { calculateVatClaimPoints } from '../utils/travelerPoints';
-import { supabase } from '../lib/supabase';
+import { supabase, type VATRefundDetails } from '../lib/supabase';
 import { requestTreasuryPayout, getConfiguredTreasuryAddress, classifyTreasuryError, isTreasuryLowBalanceError } from '../services/treasuryPayout';
 import { checkClaimEligibility } from '../services/claimBlacklist';
 import { formatStellarAddress } from '../config/treasury';
 import { getCurrentNetwork } from '../config/stellar';
+import { computeReceiptHashBytes32, submitClaimOnSorobanIfEnabled } from '../services/vatRefundOnchain';
 import {
   VAT_COUNTRIES,
   getCountryByCode,
@@ -39,7 +40,7 @@ export const VATRefundPage: React.FC<VATRefundPageProps> = ({
 }) => {
   const { createPayment, updatePaymentStatus } = usePayments();
   const { earnPointsForVatClaim, getPointsForVatClaim } = usePoints();
-  const { walletState } = useStellarWallet();
+  const { walletState, signTransaction } = useStellarWallet();
   const treasuryAddress = getConfiguredTreasuryAddress();
   const [step, setStep] = useState<'passport' | 'upload' | 'review' | 'sign' | 'confirmation' | 'error'>('passport');
   const [passportVerification, setPassportVerification] = useState<PassportVerificationResult | null>(null);
@@ -267,10 +268,37 @@ export const VATRefundPage: React.FC<VATRefundPageProps> = ({
       // Create pending VAT refund record in database
       let refundId: string | null = null;
       try {
-        const vatRefundDetails = {
+        const vatRefundDetails: VATRefundDetails = {
           ...buildVatRefundDetails(),
           receiverWalletAddress: formData.receiverWalletAddress || recipientAddress,
         };
+
+        // Best-effort Soroban `submit_claim` + persist `contractClaimId`.
+        // We never block the existing Supabase + treasury payout flow on on-chain failures.
+        try {
+          if (walletState.publicKey && signTransaction) {
+            const receiptHashBytes32 = await computeReceiptHashBytes32(
+              vatRefundDetails,
+              refundAmount
+            );
+
+            if (receiptHashBytes32) {
+              const contractClaimId = await submitClaimOnSorobanIfEnabled({
+                claimant: walletState.publicKey,
+                amountXlm: refundAmount,
+                receiptHashBytes32,
+                countryCode: claimCountryCode,
+                signTransaction,
+              });
+
+              if (contractClaimId) {
+                vatRefundDetails.contractClaimId = contractClaimId;
+              }
+            }
+          }
+        } catch (onchainErr) {
+          console.warn('Soroban submit_claim skipped/failed (non-fatal):', onchainErr);
+        }
 
         const pendingPayment = await createPayment({
           employee_id: "vat-refund",
@@ -1566,7 +1594,7 @@ export const VATRefundPage: React.FC<VATRefundPageProps> = ({
                 onClick={() => onViewHistory?.()}
                 className="border-2 border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-900 font-semibold py-3 px-8 rounded-lg transition-all duration-200 bg-white hover:bg-gray-50"
               >
-                View My Refunds
+                View my claims
               </button>
             </div>
           </div>

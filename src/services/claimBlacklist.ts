@@ -40,6 +40,50 @@ export async function fetchClaimBlacklist(): Promise<ClaimBlacklistEntry[]> {
   return (data || []) as ClaimBlacklistEntry[];
 }
 
+export async function fetchTravelerBlacklistIssues(
+  wallet: string,
+  passportNos: string[] = []
+): Promise<ClaimBlacklistEntry[]> {
+  const normalized = normalizeWallet(wallet);
+  if (!normalized) return [];
+
+  const passports = [
+    ...new Set(passportNos.map((p) => normalizePassport(p)).filter(Boolean)),
+  ];
+
+  const { data: walletRows, error: walletError } = await supabase
+    .from('claim_blacklist')
+    .select('*')
+    .eq('wallet_address', normalized)
+    .order('created_at', { ascending: false });
+
+  if (walletError) {
+    console.error('Failed to fetch traveler blacklist issues:', walletError);
+  }
+
+  let passportRows: ClaimBlacklistEntry[] = [];
+  if (passports.length > 0) {
+    const { data, error } = await supabase
+      .from('claim_blacklist')
+      .select('*')
+      .in('passport_no', passports)
+      .order('created_at', { ascending: false });
+    if (error) {
+      console.error('Failed to fetch passport blacklist issues:', error);
+    } else {
+      passportRows = (data || []) as ClaimBlacklistEntry[];
+    }
+  }
+
+  const byId = new Map<string, ClaimBlacklistEntry>();
+  for (const entry of [...((walletRows || []) as ClaimBlacklistEntry[]), ...passportRows]) {
+    byId.set(entry.id, entry);
+  }
+  return [...byId.values()].sort(
+    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  );
+}
+
 export async function isWalletBlacklisted(wallet: string): Promise<BlacklistCheckResult> {
   const normalized = normalizeWallet(wallet);
   if (!normalized) return { blocked: false };

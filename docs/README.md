@@ -44,6 +44,32 @@ flowchart LR
     UI -.-> SC
 ```
 
+## Operating model
+
+Gemetra is not just a claim form plus payout button. The commercial flow is:
+
+```mermaid
+sequenceDiagram
+    participant User as Tourist
+    participant Gemetra
+    participant Treasury as Gemetra Treasury
+    participant Gov as Government / Tax Authority
+
+    User->>Gemetra: Submit VAT claim
+    Gemetra->>Treasury: Fulfill approved claim in XLM
+    Treasury-->>User: Receive refund first
+    Gemetra->>Gov: Submit user details + receipt package
+    Gov->>Gov: Verify claim
+    Gov-->>Treasury: Reimburse Gemetra treasury
+```
+
+So the app must preserve two linked but distinct states:
+
+- **Tourist payout status** — whether Gemetra treasury has paid the user
+- **Government reimbursement status** — whether the authority has reimbursed Gemetra
+
+The current React + Supabase implementation tracks the **tourist payout leg** (paid vs pending). The **government reimbursement leg** is now also modeled in the optional Soroban `contracts/vat-refund` contract, but it is not yet represented as separate Supabase state/UI.
+
 ## Migration order (run in Supabase SQL Editor)
 
 1. `20260131000000_initial_schema.sql`

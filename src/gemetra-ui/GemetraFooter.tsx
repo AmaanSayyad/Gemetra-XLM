@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { GemetraLogo } from './GemetraLogo';
+import { GEMETRA_LINKS } from '../config/links';
 
 export type FooterNavigateAction =
   | 'explore'
@@ -26,7 +27,8 @@ const ECOSYSTEM_LINKS = [
 
 const companyLinks: FooterLink[] = [
   { label: 'Careers', href: 'mailto:amaansayyad2001@gmail.com?subject=Careers%20at%20Gemetra' },
-  { label: 'Security', href: 'https://github.com/AmaanSayyad/Gemetra-XLM', external: true },
+  { label: 'GitHub', href: GEMETRA_LINKS.github, external: true },
+  { label: 'X', href: GEMETRA_LINKS.x, external: true },
   { label: 'Transparency', action: 'guarantee' },
   { label: 'Status', href: 'https://status.stellar.org/', external: true },
   { label: 'Partners', href: 'mailto:amaansayyad2001@gmail.com?subject=Gemetra%20Partnership' },
@@ -43,12 +45,17 @@ const productLinks: FooterLink[] = [
 const resourceLinks: FooterLink[] = [
   {
     label: 'Documentation',
-    href: 'https://github.com/AmaanSayyad/Gemetra-XLM/blob/main/README.md',
+    href: GEMETRA_LINKS.readme,
+    external: true,
+  },
+  {
+    label: 'Pitch Deck',
+    href: GEMETRA_LINKS.deck,
     external: true,
   },
   {
     label: 'Sample Receipts',
-    href: 'https://github.com/AmaanSayyad/Gemetra-XLM/blob/main/docs/VAT_REFUND_SAMPLE_DATA.md',
+    href: GEMETRA_LINKS.sampleData,
     external: true,
   },
   { label: 'Stellar Expert', href: 'https://stellar.expert/', external: true },
@@ -195,7 +202,7 @@ export const GemetraFooter: React.FC<GemetraFooterProps> = ({ dark = false, onNa
           </a>
           <span>·</span>
           <a
-            href="https://github.com/AmaanSayyad/Gemetra-XLM/blob/main/README.md"
+            href={GEMETRA_LINKS.readme}
             target="_blank"
             rel="noopener noreferrer"
             className="hover:underline"

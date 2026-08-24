@@ -27,7 +27,7 @@ const VALID_TABS = [
 const NAV = [
   { id: 'dashboard', label: 'Overview' },
   { id: 'vat-refund', label: 'Submit Refund' },
-  { id: 'refund-history', label: 'My Refunds' },
+  { id: 'refund-history', label: 'My Claims' },
   { id: 'ai-assistant-chat', label: 'AI Assistant' },
   { id: 'settings', label: 'Settings' },
 ];

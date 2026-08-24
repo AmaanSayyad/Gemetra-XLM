@@ -13,6 +13,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import ConnectButton from "../utils/connect-wallet";
+import { GEMETRA_LINKS } from "../config/links";
 function GemetraLandingPage() {
   return (
     <div className="flex h-full w-full flex-col items-start bg-default-background">
@@ -64,7 +65,7 @@ function GemetraLandingPage() {
           <Button
             size="large"
             variant="neutral-secondary"
-            onClick={() => window.open('https://docs.google.com/presentation/d/1SOSCBTUPK5O3G4oFRJQUXBdJWTl25d3eip3talr7e2s/edit?usp=sharing', '_blank')}
+            onClick={() => window.open(GEMETRA_LINKS.deck, '_blank')}
             icon={<ArrowRight size={20} />}
             className="px-8 py-6 hover:bg-brand-50 transition-all duration-300"
           >
@@ -905,7 +906,7 @@ function GemetraLandingPage() {
             <Button
               size="large"
               variant="neutral-secondary"
-              onClick={() => window.open('https://docs.google.com/presentation/d/1SOSCBTUPK5O3G4oFRJQUXBdJWTl25d3eip3talr7e2s/edit?usp=sharing', '_blank')}
+              onClick={() => window.open(GEMETRA_LINKS.deck, '_blank')}
               icon={<ArrowRight size={20} />}
               className="px-10 py-6 hover:bg-brand-50 transition-all duration-300 text-lg"
             >
