@@ -50,7 +50,7 @@ sequenceDiagram
 | Database | Supabase PostgreSQL |
 | Payouts | Supabase Edge Function + native XLM |
 | AI | Google Gemini |
-| Optional | Soroban `vat-refund` contract |
+| Contract | Soroban `vat-refund` v2 (mainnet live) |
 
 ---
 
@@ -65,7 +65,7 @@ sequenceDiagram
 
 ## What's next
 
-- Wire Soroban contract to claim submission
+- Government reimbursement UI in Supabase/admin
 - Automatic XLM on points conversion
 - Merchant / airport kiosk mode
 - SCF grant for Dubai / global VAT partnerships

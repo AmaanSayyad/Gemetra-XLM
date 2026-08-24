@@ -33,15 +33,13 @@ flowchart LR
     subgraph Chain
         H[Horizon]
         T[Treasury G... wallet]
-    end
-    subgraph Optional
-        SC[Soroban vat-refund contract]
+        SC[vat-refund CBLVEZQ2...]
     end
     UI --> SB
     UI --> W
     EF --> T
     T --> H
-    UI -.-> SC
+    UI --> SC
 ```
 
 ## Operating model
@@ -68,7 +66,7 @@ So the app must preserve two linked but distinct states:
 - **Tourist payout status** — whether Gemetra treasury has paid the user
 - **Government reimbursement status** — whether the authority has reimbursed Gemetra
 
-The current React + Supabase implementation tracks the **tourist payout leg** (paid vs pending). The **government reimbursement leg** is now also modeled in the optional Soroban `contracts/vat-refund` contract, but it is not yet represented as separate Supabase state/UI.
+The current React + Supabase implementation tracks the **tourist payout leg** (paid vs pending). The **government reimbursement leg** is modeled on-chain in the live Soroban `vat-refund` contract (`CBLVEZQ2RPBZQ6IPXW5TIL4DDM2IZ5QYDPTKTQ4CSDAINGT6MICKNQED` on mainnet). It is **not** yet a separate Supabase table; the UI still shows tourist payout via `payments.status`. Enable on-chain writes with `VITE_ENABLE_VAT_REFUND_ONCHAIN=true`. See [../contracts/deployments.json](../contracts/deployments.json).
 
 ## Migration order (run in Supabase SQL Editor)
 

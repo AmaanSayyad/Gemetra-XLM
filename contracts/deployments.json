@@ -1,0 +1,44 @@
+{
+  "contract": "vat-refund",
+  "version": 2,
+  "wasmHash": "1940845fdaacc6293ce1250b54b6b4e1f8c039af9c5f71e92e0960961c6b4264",
+  "constructor": {
+    "admin": "GDHAGXZUWGJR6AQW25IU74J5JSU5HAKUMUY3SY4JNMJXNXEJCZM7WOAW",
+    "treasury": "GDHAGXZUWGJR6AQW25IU74J5JSU5HAKUMUY3SY4JNMJXNXEJCZM7WOAW",
+    "government": "GDHAGXZUWGJR6AQW25IU74J5JSU5HAKUMUY3SY4JNMJXNXEJCZM7WOAW"
+  },
+  "networks": {
+    "testnet": {
+      "contractId": "CAWEJXNXUZVF2RTKKEWONQ442E3KLB6B55NV33NJLPRBC56WYSZJAOBP",
+      "rpcUrl": "https://soroban-testnet.stellar.org",
+      "networkPassphrase": "Test SDF Network ; September 2015",
+      "uploadTx": "acc1872b1f459f47cc2028988b300b5cc582556fa58b31dd0e9c18d85d21bc03",
+      "deployTx": "55598c12e8d10e7a236079169a7b23c446859487b8261c55e75e80cdae601b81",
+      "explorer": "https://stellar.expert/explorer/testnet/contract/CAWEJXNXUZVF2RTKKEWONQ442E3KLB6B55NV33NJLPRBC56WYSZJAOBP",
+      "lab": "https://lab.stellar.org/r/testnet/contract/CAWEJXNXUZVF2RTKKEWONQ442E3KLB6B55NV33NJLPRBC56WYSZJAOBP",
+      "deployedAt": "2026-08-24T09:12:00Z",
+      "verified": {
+        "version": 2,
+        "admin": "GDHAGXZUWGJR6AQW25IU74J5JSU5HAKUMUY3SY4JNMJXNXEJCZM7WOAW",
+        "treasury": "GDHAGXZUWGJR6AQW25IU74J5JSU5HAKUMUY3SY4JNMJXNXEJCZM7WOAW",
+        "government": "GDHAGXZUWGJR6AQW25IU74J5JSU5HAKUMUY3SY4JNMJXNXEJCZM7WOAW"
+      }
+    },
+    "mainnet": {
+      "contractId": "CBLVEZQ2RPBZQ6IPXW5TIL4DDM2IZ5QYDPTKTQ4CSDAINGT6MICKNQED",
+      "rpcUrl": "https://mainnet.sorobanrpc.com",
+      "networkPassphrase": "Public Global Stellar Network ; September 2015",
+      "uploadTx": "06341e05eae52b822674b5c190f43bb1a187d0ae3c2c34397e11ceee958874db",
+      "deployTx": "c695b4a18a85f174cc80cae289f2902a4725984a134464c3c54b3ce005b3d6fd",
+      "explorer": "https://stellar.expert/explorer/public/contract/CBLVEZQ2RPBZQ6IPXW5TIL4DDM2IZ5QYDPTKTQ4CSDAINGT6MICKNQED",
+      "lab": "https://lab.stellar.org/r/mainnet/contract/CBLVEZQ2RPBZQ6IPXW5TIL4DDM2IZ5QYDPTKTQ4CSDAINGT6MICKNQED",
+      "deployedAt": "2026-08-24T09:33:00Z",
+      "verified": {
+        "version": 2,
+        "admin": "GDHAGXZUWGJR6AQW25IU74J5JSU5HAKUMUY3SY4JNMJXNXEJCZM7WOAW",
+        "treasury": "GDHAGXZUWGJR6AQW25IU74J5JSU5HAKUMUY3SY4JNMJXNXEJCZM7WOAW",
+        "government": "GDHAGXZUWGJR6AQW25IU74J5JSU5HAKUMUY3SY4JNMJXNXEJCZM7WOAW"
+      }
+    }
+  }
+}

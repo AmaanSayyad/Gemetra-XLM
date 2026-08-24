@@ -15,28 +15,14 @@ Ideas aligned with **Gemetra** (Stellar/XLM VAT refunds) and the Stellar ecosyst
 | Cancel / blacklist claims | ✅ (needs migration 5) |
 | Gemetra Points on claims | ✅ |
 | AI assistant (Gemini) | ✅ |
-| Soroban `vat-refund` registry contract | ✅ (not wired to UI) |
+| Soroban `vat-refund` registry (mainnet + testnet) | ✅ live; UI wiring is best-effort |
 
 ---
 
 ## High priority next
 
-### 1. On-chain claim registry
-Wire `contracts/vat-refund` — `submit_claim` after Supabase insert.
-
-```mermaid
-sequenceDiagram
-    participant User
-    participant App
-    participant SB as Supabase
-    participant SC as Soroban contract
-
-    User->>App: Submit claim
-    App->>SB: INSERT pending
-    App->>SC: submit_claim (wallet signs)
-    SC-->>App: claim_id
-    App->>SB: Store claim_id in vat_refund_details
-```
+### 1. Government reimbursement UI
+Surfacing Soroban government states (`GovernmentSubmitted` → `TreasuryReimbursed`) in Supabase/admin, not only on-chain.
 
 ### 2. Points conversion treasury payout
 Auto-send XLM when converting points (reuse `treasury-payout`).

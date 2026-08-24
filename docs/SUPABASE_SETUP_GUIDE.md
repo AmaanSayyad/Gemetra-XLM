@@ -148,7 +148,7 @@ The `payments` table currently tracks the **tourist payout leg** of the refund:
 - `pending` = claim created, not yet paid by Gemetra treasury
 - `completed` = Gemetra treasury paid the tourist
 
-Government reimbursement back to Gemetra treasury is part of the operating model and is **modeled in the optional Soroban `contracts/vat-refund` contract** (states like `GovernmentSubmitted`, `GovernmentApproved`, `TreasuryReimbursed`).
+Government reimbursement back to Gemetra treasury is modeled on-chain in the live Soroban `vat-refund` contract (mainnet `CBLVEZQ2RPBZQ6IPXW5TIL4DDM2IZ5QYDPTKTQ4CSDAINGT6MICKNQED`). Enable writes with `VITE_ENABLE_VAT_REFUND_ONCHAIN=true`.
 
 However, it is still **not yet represented as a separate Supabase table/state machine**. The current app UI continues to show the tourist payout leg via `payments.status` (`pending` vs `completed`).
 

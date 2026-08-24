@@ -1,6 +1,6 @@
 # Gemetra Soroban Contracts
 
-On-chain smart contracts for Gemetra. **Standalone today** — the live dApp uses Supabase + classic Stellar XLM payments.
+On-chain smart contracts for Gemetra. **Live on mainnet and testnet.** The dApp still settles tourist payouts with classic Stellar XLM; the `vat-refund` contract is the auditable claim ledger (best-effort from the UI).
 
 ## Architecture
 
@@ -11,14 +11,14 @@ flowchart TB
         SB[(Supabase)]
         EF[treasury-payout Edge Fn]
     end
-    subgraph OnChain["On-chain (optional)"]
+    subgraph OnChain["On-chain (live)"]
         SC[vat-refund contract]
         H[Horizon / RPC]
     end
     App --> SB
     App --> EF
     EF --> H
-    App -.->|future| SC
+    App -->|best-effort submit_claim / mark_paid| SC
     SC --> H
 ```
 
@@ -125,6 +125,23 @@ pnpm run contract:test
 ```
 
 Wasm: `target/wasm32v1-none/release/vat_refund.wasm`
+
+## Live deployments
+
+See [`deployments.json`](./deployments.json).
+
+| Network | Contract ID | Status |
+|---------|-------------|--------|
+| **Testnet** | [`CAWEJXNXUZVF2RTKKEWONQ442E3KLB6B55NV33NJLPRBC56WYSZJAOBP`](https://stellar.expert/explorer/testnet/contract/CAWEJXNXUZVF2RTKKEWONQ442E3KLB6B55NV33NJLPRBC56WYSZJAOBP) | Live (`version` = 2). Admin / treasury / government = `GDHAGXZUWGJR6AQW25IU74J5JSU5HAKUMUY3SY4JNMJXNXEJCZM7WOAW` |
+| **Mainnet** | [`CBLVEZQ2RPBZQ6IPXW5TIL4DDM2IZ5QYDPTKTQ4CSDAINGT6MICKNQED`](https://stellar.expert/explorer/public/contract/CBLVEZQ2RPBZQ6IPXW5TIL4DDM2IZ5QYDPTKTQ4CSDAINGT6MICKNQED) | Live (`version` = 2). Admin / treasury / government = `GDHAGXZUWGJR6AQW25IU74J5JSU5HAKUMUY3SY4JNMJXNXEJCZM7WOAW` |
+
+Wasm hash: `1940845fdaacc6293ce1250b54b6b4e1f8c039af9c5f71e92e0960961c6b4264`
+
+```bash
+# From repo root (reads TREASURY_SECRET_KEY from .env)
+pnpm run contract:deploy:testnet
+pnpm run contract:deploy:mainnet   # after funding treasury
+```
 
 ## Deploy example (testnet)
 

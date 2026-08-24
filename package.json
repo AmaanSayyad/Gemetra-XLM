@@ -14,7 +14,9 @@
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "contract:build": "cd contracts && stellar contract build",
-    "contract:test": "cd contracts && cargo test -p vat-refund"
+    "contract:test": "cd contracts && cargo test -p vat-refund",
+    "contract:deploy:testnet": "bash contracts/scripts/deploy.sh testnet",
+    "contract:deploy:mainnet": "bash contracts/scripts/deploy.sh mainnet"
   },
   "dependencies": {
     "@creit.tech/stellar-wallets-kit": "^1.9.5",
