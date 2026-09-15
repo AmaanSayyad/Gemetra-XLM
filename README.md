@@ -423,7 +423,7 @@ Source, state machine, and invoke docs: [contracts/README.md](./contracts/README
 
 ![CI green run](./docs/proof/github-actions.png)
 
-Workflow runs: [github.com/AmaanSayyad/Gemetra-XLM/actions](https://github.com/AmaanSayyad/Gemetra-XLM/actions)
+Green run #4: [actions/runs/35020553958](https://github.com/AmaanSayyad/Gemetra-XLM/actions/runs/35020553958) (`frontend` + `contracts` both passed). All runs: [github.com/AmaanSayyad/Gemetra-XLM/actions](https://github.com/AmaanSayyad/Gemetra-XLM/actions)
 
 ### Test log
 
