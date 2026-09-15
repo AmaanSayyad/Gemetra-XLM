@@ -24,7 +24,7 @@ Gemetra is a **Stellar/XLM tourist VAT refund dApp**:
 | Payouts | Native XLM via `treasury-payout` edge function |
 | AI | Google Gemini |
 | Chain | Stellar mainnet (Horizon + Soroban RPC) |
-| Contract | `vat-refund` v2 — [CBLVEZQ2…NQED](https://stellar.expert/explorer/public/contract/CBLVEZQ2RPBZQ6IPXW5TIL4DDM2IZ5QYDPTKTQ4CSDAINGT6MICKNQED) |
+| Contract | `vat-refund` v3 (testnet) invokes `claim-audit` · mainnet registry still v2 [CBLVEZQ2…NQED](https://stellar.expert/explorer/public/contract/CBLVEZQ2RPBZQ6IPXW5TIL4DDM2IZ5QYDPTKTQ4CSDAINGT6MICKNQED) |
 
 📖 **Documentation:** [docs/README.md](./docs/README.md)
 
@@ -56,12 +56,14 @@ flowchart TB
         T[Treasury G... wallet]
         H[Horizon]
         RPC[Soroban RPC]
-        SC[vat-refund CBLVEZQ2...]
+        SC[vat-refund]
+        AUD[claim-audit]
     end
     WEB --> SB
     WEB --> W
     WEB --> EF
     WEB --> SC
+    SC -->|invoke record| AUD
     EF --> T
     T --> H
     SC --> RPC
@@ -269,16 +271,19 @@ src/
   app/AppShell.tsx          # Nav + routing
   components/               # VAT*, Dashboard, AI, Settings
   config/treasury.ts        # Admin + treasury public keys
-  services/                 # treasuryPayout, vatRefundOnchain, claimBlacklist
-  hooks/                    # usePayments, usePoints, useChat
+  services/                 # treasuryPayout, vatRefundOnchain, vatRefundEvents, claimBlacklist
+  hooks/                    # usePayments, usePoints, useChat, useVatRefundEvents
   gemetra-ui/               # Design system + VAT country math
 supabase/
   migrations/               # 5 SQL migrations (run in order)
   functions/treasury-payout/
 contracts/
-  contracts/vat-refund/     # Soroban registry (live on mainnet + testnet)
+  contracts/vat-refund/     # Soroban registry v3 (invokes claim-audit)
+  contracts/claim-audit/    # Append-only receipt/status log
   deployments.json          # Contract IDs, wasm hash, explorer links
+.github/workflows/ci.yml    # pnpm test:run + cargo test -p vat-refund
 docs/                       # Setup, troubleshooting, flows
+docs/proof/                 # L3 screenshots, test log, invoke hash
 ```
 
 ---
@@ -339,7 +344,8 @@ supabase db push --project-ref gtcmjxfqjtnshexujgmq
 |---------|-------------|
 | `pnpm dev` | Vite dev server |
 | `pnpm build` | Production build |
-| `pnpm test` | Vitest unit tests |
+| `pnpm test` | Vitest unit tests (watch) |
+| `pnpm test:run` | Vitest once (CI) |
 | `pnpm run deploy:treasury` | Deploy edge function |
 | `pnpm run contract:build` | Build Soroban WASM |
 | `pnpm run contract:test` | Rust contract tests |
@@ -356,26 +362,29 @@ supabase db push --project-ref gtcmjxfqjtnshexujgmq
 - **Admin dashboard** — filter, export CSV, pay / cancel / blacklist
 - **Claim blacklist** — wallet + passport blocking
 - **Gemetra Points** — earn on claims, convert to XLM bonus
-- **Soroban `vat-refund`** — live on-chain claim registry (mainnet + testnet)
+- **Soroban `vat-refund`** — live on-chain claim registry (mainnet v2 + testnet v3)
+- **`claim-audit`** — second contract; vat-refund invokes `record` on every status change
+- **Contract event feed** — dashboard polls `ClaimSubmitted` / `ClaimStatusChanged`
 
 ---
 
 ## Smart contracts
 
-XLM payouts still go through **classic Stellar payments** (`treasury-payout`). The **`vat-refund`** Soroban contract is the on-chain claim ledger: submit, approve, pay, government review, cancel, blacklist. It does **not** move XLM.
+XLM payouts still go through **classic Stellar payments** (`treasury-payout`). The **`vat-refund`** Soroban contract is the on-chain claim ledger: submit, approve, pay, government review, cancel, blacklist. It does **not** move XLM. v3 **invokes `claim-audit.record`** after each status write.
 
-| Network | Contract ID | Explorer |
-|---------|-------------|----------|
-| **Mainnet** | `CBLVEZQ2RPBZQ6IPXW5TIL4DDM2IZ5QYDPTKTQ4CSDAINGT6MICKNQED` | [stellar.expert](https://stellar.expert/explorer/public/contract/CBLVEZQ2RPBZQ6IPXW5TIL4DDM2IZ5QYDPTKTQ4CSDAINGT6MICKNQED) · [Lab](https://lab.stellar.org/r/mainnet/contract/CBLVEZQ2RPBZQ6IPXW5TIL4DDM2IZ5QYDPTKTQ4CSDAINGT6MICKNQED) |
-| **Testnet** | `CAWEJXNXUZVF2RTKKEWONQ442E3KLB6B55NV33NJLPRBC56WYSZJAOBP` | [stellar.expert](https://stellar.expert/explorer/testnet/contract/CAWEJXNXUZVF2RTKKEWONQ442E3KLB6B55NV33NJLPRBC56WYSZJAOBP) · [Lab](https://lab.stellar.org/r/testnet/contract/CAWEJXNXUZVF2RTKKEWONQ442E3KLB6B55NV33NJLPRBC56WYSZJAOBP) |
+| Network | Contract | ID | Explorer |
+|---------|----------|----|----------|
+| **Testnet** | vat-refund v3 | `CCELCTUKPMS46CV6MVAFQY2FEJ354JU2FSZKAJ2P2WAHDNJIMCPJSI56` | [stellar.expert](https://stellar.expert/explorer/testnet/contract/CCELCTUKPMS46CV6MVAFQY2FEJ354JU2FSZKAJ2P2WAHDNJIMCPJSI56) |
+| **Testnet** | claim-audit v1 | `CBCDURJJSM6ZB2ISA34TBMYQQ7XGNMBLDPHL6XPZXJIL6D5AGLYHQIPI` | [stellar.expert](https://stellar.expert/explorer/testnet/contract/CBCDURJJSM6ZB2ISA34TBMYQQ7XGNMBLDPHL6XPZXJIL6D5AGLYHQIPI) |
+| **Mainnet** | vat-refund v2 | `CBLVEZQ2RPBZQ6IPXW5TIL4DDM2IZ5QYDPTKTQ4CSDAINGT6MICKNQED` | [stellar.expert](https://stellar.expert/explorer/public/contract/CBLVEZQ2RPBZQ6IPXW5TIL4DDM2IZ5QYDPTKTQ4CSDAINGT6MICKNQED) |
 
 | | |
 |---|---|
-| **Version** | `2` (`version()` on-chain) |
-| **Wasm hash** | `1940845fdaacc6293ce1250b54b6b4e1f8c039af9c5f71e92e0960961c6b4264` |
 | **Admin / treasury / government** | `GDHAGXZUWGJR6AQW25IU74J5JSU5HAKUMUY3SY4JNMJXNXEJCZM7WOAW` |
-| **Mainnet upload** | [06341e05…](https://stellar.expert/explorer/public/tx/06341e05eae52b822674b5c190f43bb1a187d0ae3c2c34397e11ceee958874db) |
-| **Mainnet instantiate** | [c695b4a1…](https://stellar.expert/explorer/public/tx/c695b4a18a85f174cc80cae289f2902a4725984a134464c3c54b3ce005b3d6fd) |
+| **vat-refund v3 wasm** | `bc528fd9577ae704731b34e5b953a947aa2a5fd6e38fd7c35f4a4c9982d3d28c` |
+| **claim-audit wasm** | `b5965956fe552f324ea30b6794b1e272a4e7526222f739e185c79a496dc13d3c` |
+| **Testnet `set_audit_contract`** | [db687cfe…](https://stellar.expert/explorer/testnet/tx/db687cfed662ce6f6abb94ce39e9482f05c6c260cdac1f55b9fe4726182c2854) |
+| **Mainnet instantiate (v2)** | [c695b4a1…](https://stellar.expert/explorer/public/tx/c695b4a18a85f174cc80cae289f2902a4725984a134464c3c54b3ce005b3d6fd) |
 
 Enable in the dApp (best-effort — a failed invoke does not block the off-chain claim or payout):
 
@@ -395,6 +404,36 @@ pnpm run contract:deploy:mainnet
 ```
 
 Source, state machine, and invoke docs: [contracts/README.md](./contracts/README.md). IDs and tx hashes: [contracts/deployments.json](./contracts/deployments.json).
+
+---
+
+## Level 3 proof
+
+[![CI](https://github.com/AmaanSayyad/Gemetra-XLM/actions/workflows/ci.yml/badge.svg)](https://github.com/AmaanSayyad/Gemetra-XLM/actions/workflows/ci.yml)
+
+- **Second contract:** `vat-refund` v3 calls `claim-audit.record` via `env.invoke_contract` after every status write.
+- **Events in UI:** Dashboard **On-chain claim events** polls Soroban RPC for `ClaimSubmitted` / `ClaimStatusChanged`.
+- **CI:** [`.github/workflows/ci.yml`](./.github/workflows/ci.yml) runs `pnpm test:run` and `cargo test -p vat-refund` on every push.
+
+### Mobile UI
+
+![Gemetra mobile UI](./docs/proof/mobile-ui.png)
+
+### GitHub Actions (green)
+
+![CI green run](./docs/proof/github-actions.png)
+
+Workflow runs: [github.com/AmaanSayyad/Gemetra-XLM/actions](https://github.com/AmaanSayyad/Gemetra-XLM/actions)
+
+### Test log
+
+[docs/proof/test-output.txt](./docs/proof/test-output.txt) — Vitest **193 passed**, `cargo test -p vat-refund` **8 passed** (includes `submit_claim_invokes_audit_hook`), `cargo test -p claim-audit` **1 passed**.
+
+### Explorer invoke hash
+
+`set_audit_contract` (wire vat-refund → claim-audit on testnet):
+
+**[db687cfed662ce6f6abb94ce39e9482f05c6c260cdac1f55b9fe4726182c2854](https://stellar.expert/explorer/testnet/tx/db687cfed662ce6f6abb94ce39e9482f05c6c260cdac1f55b9fe4726182c2854)**
 
 ---
 

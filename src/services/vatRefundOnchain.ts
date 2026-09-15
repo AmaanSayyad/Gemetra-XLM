@@ -4,18 +4,29 @@ import { getCurrentNetwork, getStellarConfig } from '../config/stellar';
 
 type SignTransactionFn = (xdr: string) => Promise<string>;
 
-function envEnabled(): boolean {
+export function isVatRefundOnchainEnabled(): boolean {
   return import.meta.env.VITE_ENABLE_VAT_REFUND_ONCHAIN === 'true';
 }
 
-function getContractId(): string | undefined {
+export function getVatRefundContractId(): string | undefined {
   const v = import.meta.env.VITE_VAT_REFUND_CONTRACT_ID;
   return typeof v === 'string' && v.trim().length > 0 ? v.trim() : undefined;
 }
 
-function getSorobanRpcUrl(): string | undefined {
+export function getSorobanRpcUrl(): string | undefined {
   const v = import.meta.env.VITE_SOROBAN_RPC_URL;
-  return typeof v === 'string' && v.trim().length > 0 ? v.trim() : undefined;
+  if (typeof v === 'string' && v.trim().length > 0) return v.trim();
+  return getCurrentNetwork() === 'mainnet'
+    ? 'https://mainnet.sorobanrpc.com'
+    : 'https://soroban-testnet.stellar.org';
+}
+
+function envEnabled(): boolean {
+  return isVatRefundOnchainEnabled();
+}
+
+function getContractId(): string | undefined {
+  return getVatRefundContractId();
 }
 
 function getNetworkPassphrase(): string {

@@ -14,19 +14,23 @@ flowchart TB
         EF[treasury-payout Edge Fn]
     end
     subgraph OnChain["On-chain (live)"]
-        SC[vat-refund contract]
+        SC[vat-refund v3]
+        AUD[claim-audit]
         H[Horizon / RPC]
     end
     App --> SB
     App --> EF
     EF --> H
     App -->|best-effort submit_claim / mark_paid| SC
+    SC -->|invoke record| AUD
     SC --> H
 ```
 
 ## Contract: `vat-refund`
 
-**Path:** `contracts/vat-refund/`
+**Path:** `contracts/vat-refund/` — **version 3**. After each claim persist, the registry invokes `claim-audit.record`.
+
+Admin-only: `set_audit_contract` / `audit_contract`.
 
 | Function | Signer | Description |
 |----------|--------|-------------|
@@ -61,6 +65,18 @@ flowchart LR
 ```
 
 All government interactions are recorded via **hash references** (receipt/claim package + decisions), so sensitive documents can remain off-chain.
+
+## Contract: `claim-audit`
+
+**Path:** `contracts/claim-audit/` — tiny append-only log the registry actually invokes.
+
+| Function | Description |
+|----------|-------------|
+| `record(claim_id, status)` | Called by `vat-refund`; stores latest claim + status, increments count |
+| `count` | Number of audit records |
+| `latest` | `(claim_id, status)` of the last record |
+
+Testnet: [`CBCDURJJSM6ZB2ISA34TBMYQQ7XGNMBLDPHL6XPZXJIL6D5AGLYHQIPI`](https://stellar.expert/explorer/testnet/contract/CBCDURJJSM6ZB2ISA34TBMYQQ7XGNMBLDPHL6XPZXJIL6D5AGLYHQIPI)
 
 ## Deploy sequence
 
@@ -121,6 +137,7 @@ sequenceDiagram
 cd contracts
 stellar contract build
 cargo test -p vat-refund
+cargo test -p claim-audit
 # or from repo root:
 pnpm run contract:build
 pnpm run contract:test
@@ -132,12 +149,13 @@ Wasm: `target/wasm32v1-none/release/vat_refund.wasm`
 
 See [`deployments.json`](./deployments.json).
 
-| Network | Contract ID | Status |
-|---------|-------------|--------|
-| **Testnet** | [`CAWEJXNXUZVF2RTKKEWONQ442E3KLB6B55NV33NJLPRBC56WYSZJAOBP`](https://stellar.expert/explorer/testnet/contract/CAWEJXNXUZVF2RTKKEWONQ442E3KLB6B55NV33NJLPRBC56WYSZJAOBP) | Live (`version` = 2). Admin / treasury / government = `GDHAGXZUWGJR6AQW25IU74J5JSU5HAKUMUY3SY4JNMJXNXEJCZM7WOAW` |
-| **Mainnet** | [`CBLVEZQ2RPBZQ6IPXW5TIL4DDM2IZ5QYDPTKTQ4CSDAINGT6MICKNQED`](https://stellar.expert/explorer/public/contract/CBLVEZQ2RPBZQ6IPXW5TIL4DDM2IZ5QYDPTKTQ4CSDAINGT6MICKNQED) | Live (`version` = 2). Admin / treasury / government = `GDHAGXZUWGJR6AQW25IU74J5JSU5HAKUMUY3SY4JNMJXNXEJCZM7WOAW` |
+| Network | Contract | ID | Status |
+|---------|----------|----|--------|
+| **Testnet** | vat-refund | [`CCELCTUKPMS46CV6MVAFQY2FEJ354JU2FSZKAJ2P2WAHDNJIMCPJSI56`](https://stellar.expert/explorer/testnet/contract/CCELCTUKPMS46CV6MVAFQY2FEJ354JU2FSZKAJ2P2WAHDNJIMCPJSI56) | Live (`version` = 3). Invokes claim-audit. |
+| **Testnet** | claim-audit | [`CBCDURJJSM6ZB2ISA34TBMYQQ7XGNMBLDPHL6XPZXJIL6D5AGLYHQIPI`](https://stellar.expert/explorer/testnet/contract/CBCDURJJSM6ZB2ISA34TBMYQQ7XGNMBLDPHL6XPZXJIL6D5AGLYHQIPI) | Live. Wired via [`set_audit_contract`](https://stellar.expert/explorer/testnet/tx/db687cfed662ce6f6abb94ce39e9482f05c6c260cdac1f55b9fe4726182c2854). |
+| **Mainnet** | vat-refund | [`CBLVEZQ2RPBZQ6IPXW5TIL4DDM2IZ5QYDPTKTQ4CSDAINGT6MICKNQED`](https://stellar.expert/explorer/public/contract/CBLVEZQ2RPBZQ6IPXW5TIL4DDM2IZ5QYDPTKTQ4CSDAINGT6MICKNQED) | Live (`version` = 2, no audit hook yet). |
 
-Wasm hash: `1940845fdaacc6293ce1250b54b6b4e1f8c039af9c5f71e92e0960961c6b4264`
+Admin / treasury / government = `GDHAGXZUWGJR6AQW25IU74J5JSU5HAKUMUY3SY4JNMJXNXEJCZM7WOAW`
 
 ```bash
 # From repo root (reads TREASURY_SECRET_KEY from .env)

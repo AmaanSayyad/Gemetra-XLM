@@ -40,5 +40,10 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     setupFiles: [],
+    env: {
+      VITE_SUPABASE_URL: 'https://example.supabase.co',
+      VITE_SUPABASE_ANON_KEY:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4YW1wbGUiLCJyb2xlIjoiYW5vbiJ9.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+    },
   },
 })

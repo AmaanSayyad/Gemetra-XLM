@@ -1,9 +1,9 @@
 [package]
-name = "vat-refund"
+name = "claim-audit"
 version = "0.1.0"
 edition = "2021"
 publish = false
-description = "On-chain VAT refund claim registry for Gemetra (Stellar/Soroban)"
+description = "Append-only audit log invoked by vat-refund (inter-contract)"
 
 [lib]
 crate-type = ["lib", "cdylib"]
@@ -14,4 +14,3 @@ soroban-sdk = { workspace = true }
 
 [dev-dependencies]
 soroban-sdk = { workspace = true, features = ["testutils"] }
-claim-audit = { path = "../claim-audit" }

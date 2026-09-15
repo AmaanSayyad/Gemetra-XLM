@@ -1,0 +1,249 @@
+
+> gemetra@1.0.0 test:run /Users/amaan/Downloads/Github2/Gemetra-XLM
+> vitest run
+
+
+ RUN  v4.0.18 /Users/amaan/Downloads/Github2/Gemetra-XLM
+
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ ✓ src/hooks/usePayments.test.ts (11 tests) 4ms
+ ✓ src/utils/travelerTrust.test.ts (7 tests) 15ms
+ ✓ src/config/stellar-wallets.test.ts (21 tests) 9ms
+ ✓ src/gemetra-ui/vatClaimMath.test.ts (12 tests) 6ms
+ ✓ src/services/passportVerification/mrzParser.test.ts (8 tests) 12ms
+stdout | src/services/travelerClaims.test.ts
+✅ Supabase client initialized with: {
+  url: 'https://example.supabase.co',
+  keyPrefix: 'eyJhbGciOiJIUzI1NiIs...'
+}
+
+ ✓ src/services/travelerClaims.test.ts (2 tests) 2ms
+ ✓ src/services/vatRefundEvents.test.ts (4 tests) 1ms
+ ✓ src/services/stellarLab.test.ts (3 tests) 1ms
+ ✓ src/config/stellar.test.ts (16 tests) 868ms
+       ✓ should validate testnet connection  863ms
+ ✓ src/utils/stellar-balance-integration.test.ts (8 tests) 2044ms
+       ✓ should query balance for a funded testnet account  896ms
+       ✓ should use cache for repeated queries within 10 seconds  452ms
+stdout | src/utils/stellar.test.ts > sendBulkXlmPayments > Memo handling > should accept recipients with memos
+💸 Processing payment 1/1: {
+  address: 'GAAZI4TCR3TY5OJHCTJC2A4QSY6CJWJH5IAJTGKIN2ER7LBNVKOCCWN7',
+  amount: 1,
+  memo: 'Payment for Alice'
+}
+
+stderr | src/utils/stellar.test.ts > sendBulkXlmPayments > Memo handling > should accept recipients with memos
+❌ Payment 1 failed: Transaction signature is invalid.
+
+stdout | src/utils/stellar.test.ts > sendBulkXlmPayments > Memo handling > should accept recipients without memos
+💸 Processing payment 1/1: {
+  address: 'GAAZI4TCR3TY5OJHCTJC2A4QSY6CJWJH5IAJTGKIN2ER7LBNVKOCCWN7',
+  amount: 1,
+  memo: undefined
+}
+
+stderr | src/utils/stellar.test.ts > sendBulkXlmPayments > Memo handling > should accept recipients without memos
+❌ Payment 1 failed: Transaction signature is invalid.
+
+stdout | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should accept multiple valid recipients
+💸 Processing payment 1/3: {
+  address: 'GAAZI4TCR3TY5OJHCTJC2A4QSY6CJWJH5IAJTGKIN2ER7LBNVKOCCWN7',
+  amount: 1,
+  memo: undefined
+}
+
+stderr | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should accept multiple valid recipients
+❌ Payment 1 failed: Transaction signature is invalid.
+
+stdout | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should accept multiple valid recipients
+💸 Processing payment 2/3: {
+  address: 'GC3C4AKRBQLHOJ45U4XG35ESVWRDECWO5XLDGYADO6DPR3L7KIDVUMML',
+  amount: 2,
+  memo: undefined
+}
+
+stderr | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should accept multiple valid recipients
+❌ Payment 2 failed: Transaction signature is invalid.
+
+stdout | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should accept multiple valid recipients
+💸 Processing payment 3/3: {
+  address: 'GBRPYHIL2CI3FNQ4BXLFMNDLFJUNPU2HY3ZMFSHONUCEOASW7QC7OX2H',
+  amount: 3,
+  memo: undefined
+}
+
+stderr | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should accept multiple valid recipients
+❌ Payment 3 failed: Transaction signature is invalid.
+
+stdout | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should handle large number of recipients
+💸 Processing payment 1/10: {
+  address: 'GAAZI4TCR3TY5OJHCTJC2A4QSY6CJWJH5IAJTGKIN2ER7LBNVKOCCWN7',
+  amount: 1,
+  memo: 'Payment 1'
+}
+
+stderr | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should handle large number of recipients
+❌ Payment 1 failed: Transaction signature is invalid.
+
+stdout | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should handle large number of recipients
+💸 Processing payment 2/10: {
+  address: 'GAAZI4TCR3TY5OJHCTJC2A4QSY6CJWJH5IAJTGKIN2ER7LBNVKOCCWN7',
+  amount: 2,
+  memo: 'Payment 2'
+}
+
+stderr | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should handle large number of recipients
+❌ Payment 2 failed: Transaction signature is invalid.
+
+stdout | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should handle large number of recipients
+💸 Processing payment 3/10: {
+  address: 'GAAZI4TCR3TY5OJHCTJC2A4QSY6CJWJH5IAJTGKIN2ER7LBNVKOCCWN7',
+  amount: 3,
+  memo: 'Payment 3'
+}
+
+stderr | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should handle large number of recipients
+❌ Payment 3 failed: Transaction signature is invalid.
+
+stdout | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should handle large number of recipients
+💸 Processing payment 4/10: {
+  address: 'GAAZI4TCR3TY5OJHCTJC2A4QSY6CJWJH5IAJTGKIN2ER7LBNVKOCCWN7',
+  amount: 4,
+  memo: 'Payment 4'
+}
+
+stderr | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should handle large number of recipients
+❌ Payment 4 failed: Transaction signature is invalid.
+
+stdout | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should handle large number of recipients
+💸 Processing payment 5/10: {
+  address: 'GAAZI4TCR3TY5OJHCTJC2A4QSY6CJWJH5IAJTGKIN2ER7LBNVKOCCWN7',
+  amount: 5,
+  memo: 'Payment 5'
+}
+
+stderr | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should handle large number of recipients
+❌ Payment 5 failed: Transaction signature is invalid.
+
+stdout | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should handle large number of recipients
+💸 Processing payment 6/10: {
+  address: 'GAAZI4TCR3TY5OJHCTJC2A4QSY6CJWJH5IAJTGKIN2ER7LBNVKOCCWN7',
+  amount: 6,
+  memo: 'Payment 6'
+}
+
+stderr | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should handle large number of recipients
+❌ Payment 6 failed: Transaction signature is invalid.
+
+stdout | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should handle large number of recipients
+💸 Processing payment 7/10: {
+  address: 'GAAZI4TCR3TY5OJHCTJC2A4QSY6CJWJH5IAJTGKIN2ER7LBNVKOCCWN7',
+  amount: 7,
+  memo: 'Payment 7'
+}
+
+stderr | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should handle large number of recipients
+❌ Payment 7 failed: Transaction signature is invalid.
+
+stdout | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should handle large number of recipients
+💸 Processing payment 8/10: {
+  address: 'GAAZI4TCR3TY5OJHCTJC2A4QSY6CJWJH5IAJTGKIN2ER7LBNVKOCCWN7',
+  amount: 8,
+  memo: 'Payment 8'
+}
+
+stderr | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should handle large number of recipients
+❌ Payment 8 failed: Transaction signature is invalid.
+
+stdout | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should handle large number of recipients
+💸 Processing payment 9/10: {
+  address: 'GAAZI4TCR3TY5OJHCTJC2A4QSY6CJWJH5IAJTGKIN2ER7LBNVKOCCWN7',
+  amount: 9,
+  memo: 'Payment 9'
+}
+
+stderr | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should handle large number of recipients
+❌ Payment 9 failed: Transaction signature is invalid.
+
+stdout | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should handle large number of recipients
+💸 Processing payment 10/10: {
+  address: 'GAAZI4TCR3TY5OJHCTJC2A4QSY6CJWJH5IAJTGKIN2ER7LBNVKOCCWN7',
+  amount: 10,
+  memo: 'Payment 10'
+}
+
+stderr | src/utils/stellar.test.ts > sendBulkXlmPayments > Multiple recipients > should handle large number of recipients
+❌ Payment 10 failed: Transaction signature is invalid.
+
+stdout | src/utils/stellar.test.ts > sendBulkXlmPayments > Edge cases > should handle recipients with whitespace in addresses
+💸 Processing payment 1/1: {
+  address: '  GAAZI4TCR3TY5OJHCTJC2A4QSY6CJWJH5IAJTGKIN2ER7LBNVKOCCWN7  ',
+  amount: 1,
+  memo: undefined
+}
+
+stderr | src/utils/stellar.test.ts > sendBulkXlmPayments > Edge cases > should handle recipients with whitespace in addresses
+❌ Payment 1 failed: Failed to build payment transaction: destination is invalid
+
+stdout | src/utils/stellar.test.ts > sendBulkXlmPayments > Edge cases > should handle federated addresses
+💸 Processing payment 1/2: { address: 'alice*example.com', amount: 1, memo: undefined }
+
+stderr | src/utils/stellar.test.ts > sendBulkXlmPayments > Edge cases > should handle federated addresses
+❌ Payment 1 failed: Failed to build payment transaction: destination is invalid
+
+stdout | src/utils/stellar.test.ts > sendBulkXlmPayments > Edge cases > should handle federated addresses
+💸 Processing payment 2/2: { address: 'bob*stellar.org', amount: 2, memo: undefined }
+
+stderr | src/utils/stellar.test.ts > sendBulkXlmPayments > Edge cases > should handle federated addresses
+❌ Payment 2 failed: Failed to build payment transaction: destination is invalid
+
+stdout | src/utils/stellar.test.ts > sendBulkXlmPayments > Edge cases > should handle very small amounts
+💸 Processing payment 1/1: {
+  address: 'GAAZI4TCR3TY5OJHCTJC2A4QSY6CJWJH5IAJTGKIN2ER7LBNVKOCCWN7',
+  amount: 1e-7,
+  memo: undefined
+}
+
+stderr | src/utils/stellar.test.ts > sendBulkXlmPayments > Edge cases > should handle very small amounts
+❌ Payment 1 failed: Transaction signature is invalid.
+
+ ✓ src/utils/stellar.test.ts (101 tests) 15250ms
+       ✓ should accept valid Stellar address format  884ms
+       ✓ should accept valid parameters with memo  464ms
+       ✓ should accept large amounts in stroops  313ms
+       ✓ should accept recipients with memos  452ms
+       ✓ should accept recipients without memos  897ms
+       ✓ should accept multiple valid recipients  2425ms
+       ✓ should handle large number of recipients  5654ms
+       ✓ should handle recipients with whitespace in addresses  461ms
+       ✓ should handle federated addresses  778ms
+       ✓ should handle very small amounts  889ms
+
+ Test Files  11 passed (11)
+      Tests  193 passed (193)
+   Start at  01:59:08
+   Duration  15.66s (transform 721ms, setup 0ms, import 1.65s, tests 18.21s, environment 1ms)
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.25s
+     Running unittests src/lib.rs (target/debug/deps/claim_audit-2b822e434de76d85)
+
+running 1 test
+test test::records_and_reads_latest ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/vat_refund-983194f1601c609e)
+
+running 8 tests
+test test::rejects_non_positive_amount ... ok
+test test::initializes_and_returns_version ... ok
+test test::submit_and_approve_claim ... ok
+test test::blacklist_blocks_future_claims ... ok
+test test::government_reject_flow_sets_rejected_state ... ok
+test test::submit_claim_invokes_audit_hook ... ok
+test test::government_submission_approval_and_reimbursement_flow ... ok
+test test::mark_paid_and_cancel_flow ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+--- cargo ---

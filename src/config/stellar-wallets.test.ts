@@ -17,6 +17,14 @@ import {
   isWalletAvailable,
 } from './stellar-wallets';
 
+function mockFreighterInstalled() {
+  vi.stubGlobal('window', { freighter: {} });
+}
+
+function unmockWindow() {
+  vi.unstubAllGlobals();
+}
+
 describe('Stellar Wallet Configuration Module', () => {
   describe('StellarWalletType enum', () => {
     it('should have Freighter wallet type', () => {
@@ -41,13 +49,9 @@ describe('Stellar Wallet Configuration Module', () => {
     });
 
     it('should return true when Freighter is installed', () => {
-      // Mock Freighter installation
-      (window as any).freighter = {};
-      
+      mockFreighterInstalled();
       expect(isFreighterInstalled()).toBe(true);
-      
-      // Cleanup
-      delete (window as any).freighter;
+      unmockWindow();
     });
   });
 
@@ -143,17 +147,13 @@ describe('Stellar Wallet Configuration Module', () => {
     });
 
     it('should return both wallets when Freighter is installed', () => {
-      // Mock Freighter installation
-      (window as any).freighter = {};
-      
+      mockFreighterInstalled();
       const available = getAvailableWallets();
       
       expect(available).toHaveLength(2);
       expect(available.some(w => w.id === StellarWalletType.Freighter)).toBe(true);
       expect(available.some(w => w.id === StellarWalletType.Albedo)).toBe(true);
-      
-      // Cleanup
-      delete (window as any).freighter;
+      unmockWindow();
     });
   });
 
@@ -170,13 +170,9 @@ describe('Stellar Wallet Configuration Module', () => {
     });
 
     it('should return true for Freighter when installed', () => {
-      // Mock Freighter installation
-      (window as any).freighter = {};
-      
+      mockFreighterInstalled();
       expect(isWalletAvailable(StellarWalletType.Freighter)).toBe(true);
-      
-      // Cleanup
-      delete (window as any).freighter;
+      unmockWindow();
     });
 
     it('should always return true for Albedo', () => {

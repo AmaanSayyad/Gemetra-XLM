@@ -110,7 +110,7 @@ TREASURY_SECRET_KEY=S...
 
 ## Soroban (optional)
 
-`contracts/vat-refund` — on-chain claim registry. **Mainnet live:** `CBLVEZQ2RPBZQ6IPXW5TIL4DDM2IZ5QYDPTKTQ4CSDAINGT6MICKNQED`. **Testnet live:** `CAWEJXNXUZVF2RTKKEWONQ442E3KLB6B55NV33NJLPRBC56WYSZJAOBP` (see `contracts/deployments.json`). Frontend wiring is best-effort via `VITE_ENABLE_VAT_REFUND_ONCHAIN`.
+`contracts/vat-refund` v3 invokes `claim-audit.record`. **Mainnet (v2):** `CBLVEZQ2RPBZQ6IPXW5TIL4DDM2IZ5QYDPTKTQ4CSDAINGT6MICKNQED`. **Testnet v3:** `CCELCTUKPMS46CV6MVAFQY2FEJ354JU2FSZKAJ2P2WAHDNJIMCPJSI56`. **claim-audit testnet:** `CBCDURJJSM6ZB2ISA34TBMYQQ7XGNMBLDPHL6XPZXJIL6D5AGLYHQIPI`. See `contracts/deployments.json`. Frontend wiring is best-effort via `VITE_ENABLE_VAT_REFUND_ONCHAIN`. Dashboard streams `ClaimSubmitted` / `ClaimStatusChanged`.
 
 ```bash
 pnpm run contract:build

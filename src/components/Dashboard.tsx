@@ -16,6 +16,7 @@ import { VATRefundOverview } from './VATRefundOverview';
 import { TokenBalance } from './TokenBalance';
 import { RecentActivity } from './RecentActivity';
 import { AllActivityPage } from './AllActivityPages';
+import { ContractEventFeed } from './ContractEventFeed';
 import { usePayments } from '../hooks/usePayments';
 
 interface DashboardProps {
@@ -148,6 +149,9 @@ export const Dashboard: React.FC<DashboardProps> = ({
         </div>
         <div>
           <TokenBalance />
+          <div className="mt-6">
+            <ContractEventFeed />
+          </div>
         </div>
       </div>
 

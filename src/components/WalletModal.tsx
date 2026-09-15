@@ -52,6 +52,14 @@ export const WalletModal: React.FC<WalletModalProps> = ({ isOpen, onClose }) => 
     try {
       setConnectingWallet(walletType);
       setConnectionError(null);
+
+      if (walletType === StellarWalletType.Freighter && !isWalletInstalled(StellarWalletType.Freighter)) {
+        setConnectionError(
+          'Wallet not found. Install the Freighter extension, then try again. https://www.freighter.app/'
+        );
+        setConnectingWallet(null);
+        return;
+      }
       
       await connect(walletType);
       

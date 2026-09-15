@@ -184,3 +184,35 @@ fn government_reject_flow_sets_rejected_state() {
     client.government_reject(&gov, &1, &sample_receipt(&env, 21));
     assert_eq!(client.get_claim(&1).status, ClaimStatus::GovernmentRejected);
 }
+
+#[test]
+fn submit_claim_invokes_audit_hook() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let admin = Address::generate(&env);
+    let treasury = Address::generate(&env);
+    let government = Address::generate(&env);
+    let audit_id = env.register(claim_audit::ClaimAuditContract, (&admin,));
+    let vat_id = env.register(VatRefundContract, (&admin, &treasury, &government));
+    let vat = VatRefundContractClient::new(&env, &vat_id);
+    let audit = claim_audit::ClaimAuditContractClient::new(&env, &audit_id);
+
+    vat.set_audit_contract(&admin, &audit_id);
+    assert_eq!(vat.audit_contract(), Some(audit_id));
+
+    let claimant = Address::generate(&env);
+    vat.submit_claim(
+        &claimant,
+        &10_000_000i128,
+        &sample_receipt(&env, 8),
+        &Symbol::new(&env, "SG"),
+    );
+
+    assert_eq!(audit.count(), 1);
+    assert_eq!(audit.latest(), (1, ClaimStatus::Pending as u32));
+
+    vat.approve_claim(&admin, &1);
+    assert_eq!(audit.count(), 2);
+    assert_eq!(audit.latest(), (1, ClaimStatus::Approved as u32));
+}

@@ -10,12 +10,12 @@
 
 #![no_std]
 use soroban_sdk::{
-    contract, contracterror, contractevent, contractimpl, contracttype, Address, BytesN, Env,
-    Symbol,
+    contract, contracterror, contractevent, contractimpl, contracttype, vec, Address, BytesN, Env,
+    IntoVal, Symbol, Val,
 };
 
 /// Contract version for clients and upgrades.
-pub const VERSION: u32 = 2;
+pub const VERSION: u32 = 3;
 
 #[contracttype]
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -67,6 +67,8 @@ pub enum DataKey {
     ClaimCount,
     Claim(u64),
     WalletBlacklisted(Address),
+    /// Optional `claim-audit` contract this registry invokes after status changes.
+    Audit,
 }
 
 #[contracterror]
@@ -215,9 +217,23 @@ impl VatRefundContract {
             country_code,
         }
         .publish(&env);
+        notify_audit(&env, claim_id, ClaimStatus::Pending);
 
         extend_instance_ttl(&env);
         Ok(claim_id)
+    }
+
+    /// Wire the `claim-audit` contract for inter-contract `record` calls.
+    pub fn set_audit_contract(env: Env, admin: Address, audit: Address) -> Result<(), Error> {
+        require_admin(&env, &admin)?;
+        admin.require_auth();
+        env.storage().instance().set(&DataKey::Audit, &audit);
+        extend_instance_ttl(&env);
+        Ok(())
+    }
+
+    pub fn audit_contract(env: Env) -> Option<Address> {
+        env.storage().instance().get(&DataKey::Audit)
     }
 
     /// Admin approves a pending claim for payout.
@@ -230,15 +246,7 @@ impl VatRefundContract {
             return Err(Error::InvalidStatus);
         }
         claim.status = ClaimStatus::Approved;
-        save_claim(&env, claim_id, &claim);
-
-        ClaimStatusChanged {
-            claim_id,
-            status: ClaimStatus::Approved,
-            actor: admin,
-        }
-        .publish(&env);
-
+        persist_status(&env, claim_id, &claim, admin);
         extend_instance_ttl(&env);
         Ok(())
     }
@@ -259,15 +267,7 @@ impl VatRefundContract {
         }
         claim.status = ClaimStatus::Paid;
         claim.payout_ref = payout_ref;
-        save_claim(&env, claim_id, &claim);
-
-        ClaimStatusChanged {
-            claim_id,
-            status: ClaimStatus::Paid,
-            actor: admin,
-        }
-        .publish(&env);
-
+        persist_status(&env, claim_id, &claim, admin);
         extend_instance_ttl(&env);
         Ok(())
     }
@@ -290,14 +290,7 @@ impl VatRefundContract {
         claim.status = ClaimStatus::GovernmentSubmitted;
         claim.government_submission_ref = government_submission_ref;
         claim.government_submitted_at = env.ledger().timestamp();
-
-        ClaimStatusChanged {
-            claim_id,
-            status: ClaimStatus::GovernmentSubmitted,
-            actor: admin,
-        }
-        .publish(&env);
-
+        persist_status(&env, claim_id, &claim, admin);
         extend_instance_ttl(&env);
         Ok(())
     }
@@ -320,14 +313,7 @@ impl VatRefundContract {
         claim.status = ClaimStatus::GovernmentApproved;
         claim.government_decision_ref = government_decision_ref;
         claim.government_decision_at = env.ledger().timestamp();
-
-        ClaimStatusChanged {
-            claim_id,
-            status: ClaimStatus::GovernmentApproved,
-            actor: gov,
-        }
-        .publish(&env);
-
+        persist_status(&env, claim_id, &claim, gov);
         extend_instance_ttl(&env);
         Ok(())
     }
@@ -350,14 +336,7 @@ impl VatRefundContract {
         claim.status = ClaimStatus::GovernmentRejected;
         claim.government_decision_ref = government_decision_ref;
         claim.government_decision_at = env.ledger().timestamp();
-
-        ClaimStatusChanged {
-            claim_id,
-            status: ClaimStatus::GovernmentRejected,
-            actor: gov,
-        }
-        .publish(&env);
-
+        persist_status(&env, claim_id, &claim, gov);
         extend_instance_ttl(&env);
         Ok(())
     }
@@ -381,14 +360,7 @@ impl VatRefundContract {
         claim.status = ClaimStatus::TreasuryReimbursed;
         claim.treasury_reimbursement_ref = treasury_reimbursement_ref;
         claim.treasury_reimbursed_at = env.ledger().timestamp();
-
-        ClaimStatusChanged {
-            claim_id,
-            status: ClaimStatus::TreasuryReimbursed,
-            actor: gov,
-        }
-        .publish(&env);
-
+        persist_status(&env, claim_id, &claim, gov);
         extend_instance_ttl(&env);
         Ok(())
     }
@@ -403,15 +375,7 @@ impl VatRefundContract {
             return Err(Error::InvalidStatus);
         }
         claim.status = ClaimStatus::Cancelled;
-        save_claim(&env, claim_id, &claim);
-
-        ClaimStatusChanged {
-            claim_id,
-            status: ClaimStatus::Cancelled,
-            actor: admin,
-        }
-        .publish(&env);
-
+        persist_status(&env, claim_id, &claim, admin);
         extend_instance_ttl(&env);
         Ok(())
     }
@@ -431,18 +395,11 @@ impl VatRefundContract {
 
         let wallet = claim.claimant.clone();
         claim.status = ClaimStatus::Blacklisted;
-        save_claim(&env, claim_id, &claim);
+        persist_status(&env, claim_id, &claim, admin.clone());
 
         env.storage()
             .instance()
             .set(&DataKey::WalletBlacklisted(wallet.clone()), &true);
-
-        ClaimStatusChanged {
-            claim_id,
-            status: ClaimStatus::Blacklisted,
-            actor: admin.clone(),
-        }
-        .publish(&env);
 
         WalletBlacklisted {
             wallet,
@@ -501,6 +458,30 @@ fn save_claim(env: &Env, claim_id: u64, claim: &Claim) {
     env.storage()
         .persistent()
         .set(&DataKey::Claim(claim_id), claim);
+}
+
+fn persist_status(env: &Env, claim_id: u64, claim: &Claim, actor: Address) {
+    save_claim(env, claim_id, claim);
+    ClaimStatusChanged {
+        claim_id,
+        status: claim.status,
+        actor,
+    }
+    .publish(env);
+    notify_audit(env, claim_id, claim.status);
+}
+
+/// Best-effort inter-contract call into `claim-audit.record`.
+fn notify_audit(env: &Env, claim_id: u64, status: ClaimStatus) {
+    let Some(audit): Option<Address> = env.storage().instance().get(&DataKey::Audit) else {
+        return;
+    };
+    let args: soroban_sdk::Vec<Val> = vec![
+        env,
+        claim_id.into_val(env),
+        (status as u32).into_val(env),
+    ];
+    let _: u64 = env.invoke_contract(&audit, &Symbol::new(env, "record"), args);
 }
 
 fn zero_bytes(env: &Env) -> BytesN<32> {

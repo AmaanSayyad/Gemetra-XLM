@@ -227,7 +227,10 @@ export class StellarWalletManager {
    * @param xdr - The transaction XDR to sign
    * @returns Promise resolving to signing result
    */
-  async signTransaction(xdr: string): Promise<SignTransactionResult> {
+  async signTransaction(
+    xdr: string,
+    networkOverride?: 'mainnet' | 'testnet'
+  ): Promise<SignTransactionResult> {
     try {
       // Check if wallet is connected
       if (!this.walletState.isConnected || !this.walletState.publicKey) {
@@ -238,10 +241,12 @@ export class StellarWalletManager {
         };
       }
 
+      const network = networkOverride ?? this.config.network;
+
       // Sign the transaction using the kit
       const { signedTxXdr } = await this.kit.signTransaction(xdr, {
         address: this.walletState.publicKey,
-        networkPassphrase: this.config.network === 'mainnet'
+        networkPassphrase: network === 'mainnet'
           ? 'Public Global Stellar Network ; September 2015'
           : 'Test SDF Network ; September 2015',
       });
@@ -320,7 +325,7 @@ interface StellarWalletContextValue {
   disconnect: () => Promise<void>;
 
   /** Sign a transaction with the connected wallet */
-  signTransaction: (xdr: string) => Promise<string>;
+  signTransaction: (xdr: string, networkOverride?: 'mainnet' | 'testnet') => Promise<string>;
 
   /** Check if a wallet is installed */
   isWalletInstalled: (walletType: StellarWalletType) => boolean;
@@ -418,12 +423,15 @@ export function StellarWalletProvider({
   /**
    * Sign a transaction with the connected wallet
    */
-  const signTransaction = useCallback(async (xdr: string): Promise<string> => {
+  const signTransaction = useCallback(async (
+    xdr: string,
+    networkOverride?: 'mainnet' | 'testnet'
+  ): Promise<string> => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const result = await walletManager.signTransaction(xdr);
+      const result = await walletManager.signTransaction(xdr, networkOverride);
 
       if (result.success) {
         return result.signedXdr;
